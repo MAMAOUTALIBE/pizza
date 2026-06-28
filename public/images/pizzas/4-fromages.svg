@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 640" width="800" height="640" role="img" aria-label="4 Fromages">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="38%" r="75%">
+      <stop offset="0%" stop-color="#2a211c"/><stop offset="100%" stop-color="#0f0c0b"/>
+    </radialGradient>
+    <radialGradient id="crust" cx="50%" cy="45%" r="60%">
+      <stop offset="60%" stop-color="#e6b25a"/><stop offset="88%" stop-color="#cf8a32"/><stop offset="100%" stop-color="#9c5a1c"/>
+    </radialGradient>
+    <radialGradient id="sauce" cx="50%" cy="45%" r="60%">
+      <stop offset="0%" stop-color="#d6452b"/><stop offset="100%" stop-color="#a32c18"/>
+    </radialGradient>
+  </defs>
+  <rect width="800" height="640" fill="url(#bg)"/>
+  <circle cx="400" cy="290" r="236" fill="#000" opacity="0.35"/>
+  <circle cx="400" cy="290" r="230" fill="url(#crust)"/>
+  <circle cx="400" cy="290" r="204" fill="url(#sauce)"/>
+  <circle cx="285.2" cy="345.9" r="21.9" fill="#f4e3b8" opacity="0.55"/><circle cx="347.5" cy="117.4" r="19.2" fill="#f4e3b8" opacity="0.55"/><circle cx="273.8" cy="287.1" r="34.1" fill="#f4e3b8" opacity="0.55"/><circle cx="400.7" cy="321.6" r="31.9" fill="#f4e3b8" opacity="0.55"/><circle cx="328.8" cy="390.6" r="21.7" fill="#f4e3b8" opacity="0.55"/><circle cx="423.2" cy="436.1" r="34.6" fill="#f4e3b8" opacity="0.55"/><circle cx="352.9" cy="455.6" r="35.9" fill="#f4e3b8" opacity="0.55"/><circle cx="501.2" cy="272.1" r="34.7" fill="#f4e3b8" opacity="0.55"/><circle cx="325.0" cy="141.6" r="18.1" fill="#f4e3b8" opacity="0.55"/><circle cx="447.2" cy="191.3" r="39.4" fill="#f4e3b8" opacity="0.55"/>
+  <circle cx="311.8" cy="341.6" r="20.2" fill="#f0d68a" opacity="0.85"/><circle cx="545.8" cy="375.6" r="13.4" fill="#cdd6b0" opacity="0.8"/><circle cx="248.8" cy="344.1" r="10.2" fill="#e0a92e" opacity="0.95"/><circle cx="519.8" cy="219.1" r="16.0" fill="#f0d68a" opacity="0.85"/><circle cx="541.4" cy="200.2" r="17.7" fill="#cdd6b0" opacity="0.8"/><circle cx="490.6" cy="160.6" r="10.3" fill="#e0a92e" opacity="0.95"/><circle cx="507.7" cy="425.6" r="13.5" fill="#f0d68a" opacity="0.85"/><circle cx="427.6" cy="412.3" r="15.0" fill="#cdd6b0" opacity="0.8"/><circle cx="323.4" cy="300.5" r="9.3" fill="#e0a92e" opacity="0.95"/><circle cx="346.0" cy="363.7" r="14.9" fill="#f0d68a" opacity="0.85"/><circle cx="400.8" cy="370.1" r="13.8" fill="#cdd6b0" opacity="0.8"/><circle cx="310.0" cy="234.1" r="8.1" fill="#e0a92e" opacity="0.95"/><circle cx="418.9" cy="210.7" r="14.2" fill="#f0d68a" opacity="0.85"/><circle cx="395.0" cy="359.0" r="16.0" fill="#cdd6b0" opacity="0.8"/>
+  <text x="400" y="588" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="46" fill="#f5ecdd" font-style="italic">4 Fromages</text>
+  <text x="400" y="618" text-anchor="middle" font-family="Arial, sans-serif" font-size="15" letter-spacing="4" fill="#e8590c">LA BELLA · PIZZERIA</text>
+</svg>

@@ -1,0 +1,728 @@
+// ============================================================================
+// La Bella Pizzeria — Schéma de base de données (Prisma + PostgreSQL)
+//
+// Modèle de données complet du CRM / back-office. Couvre commandes, clients,
+// catalogue, menus, options, livraison, réservations, paiements, promotions,
+// fidélité, marketing, avis, médiathèque, paramètres, stocks, notifications,
+// assistant IA, journal d'activité et utilisateurs/permissions.
+//
+// L'UI admin tourne aujourd'hui sur une couche de données mockée (data/admin/*)
+// qui reproduit ces modèles : brancher la vraie base = remplacer cette couche
+// par des appels Prisma, sans réécrire les composants.
+// ============================================================================
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ----------------------------------------------------------------------------
+// Enums
+// ----------------------------------------------------------------------------
+
+enum UserRole {
+  SUPER_ADMIN
+  MANAGER
+  KITCHEN
+  DRIVER
+  SUPPORT
+}
+
+enum OrderStatus {
+  NEW
+  CONFIRMED
+  PREPARING
+  READY
+  OUT_FOR_DELIVERY
+  DELIVERED
+  PICKED_UP
+  CANCELLED
+  REFUNDED
+}
+
+enum OrderChannel {
+  DELIVERY
+  PICKUP
+  DINE_IN
+  QR_TABLE
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  FAILED
+  REFUNDED
+  PARTIALLY_REFUNDED
+}
+
+enum PaymentMethod {
+  CARD_ONLINE
+  CARD_ON_SITE
+  CASH
+  MEAL_VOUCHER
+}
+
+enum ReservationStatus {
+  PENDING
+  CONFIRMED
+  ARRIVED
+  CANCELLED
+  NO_SHOW
+}
+
+enum DeliveryStatus {
+  UNASSIGNED
+  ASSIGNED
+  EN_ROUTE
+  DELIVERED
+  ISSUE
+  CANCELLED
+}
+
+enum ProductType {
+  PIZZA
+  DRINK
+  DESSERT
+  SIDE
+  SAUCE
+}
+
+enum PromoType {
+  PERCENTAGE
+  FIXED_AMOUNT
+  FREE_DELIVERY
+  FREE_PRODUCT
+  SPECIAL_MENU
+}
+
+enum DiscountTarget {
+  CART
+  CATEGORY
+  PRODUCT
+}
+
+enum ReviewStatus {
+  PENDING
+  PUBLISHED
+  HIDDEN
+  FLAGGED
+}
+
+enum CampaignChannel {
+  EMAIL
+  SMS
+}
+
+enum CampaignStatus {
+  DRAFT
+  SCHEDULED
+  SENDING
+  SENT
+  CANCELLED
+}
+
+enum NotificationType {
+  NEW_ORDER
+  PAYMENT_RECEIVED
+  NEW_RESERVATION
+  LOW_STOCK
+  NEW_REVIEW
+  DELIVERY_LATE
+}
+
+enum StockStatus {
+  OK
+  LOW
+  OUT
+}
+
+// ----------------------------------------------------------------------------
+// Utilisateurs, rôles & permissions
+// ----------------------------------------------------------------------------
+
+model User {
+  id           String    @id @default(cuid())
+  email        String    @unique
+  name         String
+  passwordHash String
+  role         UserRole  @default(SUPPORT)
+  phone        String?
+  avatarUrl    String?
+  active       Boolean   @default(true)
+  lastLoginAt  DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  permissions   UserPermission[]
+  activityLogs  ActivityLog[]
+  driver        DeliveryDriver?
+  notifications Notification[]
+
+  @@index([role])
+}
+
+model Permission {
+  id          String           @id @default(cuid())
+  key         String           @unique // ex. "orders.update"
+  label       String
+  description String?
+  users       UserPermission[]
+}
+
+// Permissions fines attribuées en plus du rôle.
+model UserPermission {
+  user         User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId       String
+  permission   Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+  permissionId String
+
+  @@id([userId, permissionId])
+}
+
+// ----------------------------------------------------------------------------
+// Clients (CRM)
+// ----------------------------------------------------------------------------
+
+model Customer {
+  id             String    @id @default(cuid())
+  firstName      String
+  lastName       String
+  email          String?   @unique
+  phone          String    @unique
+  notes          String?
+  allergies      String?
+  tags           String[]  @default([]) // VIP, fidèle, inactif…
+  marketingOptIn Boolean   @default(false)
+  smsOptIn       Boolean   @default(false)
+  anonymizedAt   DateTime?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  addresses       Address[]
+  orders          Order[]
+  reservations    Reservation[]
+  reviews         Review[]
+  loyaltyAccount  LoyaltyAccount?
+  aiConversations AiConversation[]
+
+  @@index([phone])
+  @@index([email])
+}
+
+model Address {
+  id         String   @id @default(cuid())
+  customer   Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  customerId String
+  label      String? // Domicile, Bureau…
+  line1      String
+  line2      String?
+  zip        String
+  city       String
+  isDefault  Boolean  @default(false)
+  orders     Order[]
+}
+
+// ----------------------------------------------------------------------------
+// Catalogue : catégories, produits, options
+// ----------------------------------------------------------------------------
+
+model Category {
+  id          String      @id @default(cuid())
+  name        String
+  slug        String      @unique
+  description String?
+  type        ProductType @default(PIZZA)
+  position    Int         @default(0)
+  active      Boolean     @default(true)
+  products    Product[]
+}
+
+model Product {
+  id          String      @id @default(cuid())
+  name        String
+  slug        String      @unique
+  type        ProductType @default(PIZZA)
+  shortDesc   String?
+  longDesc    String?
+  price       Decimal     @db.Decimal(10, 2)
+  promoPrice  Decimal?    @db.Decimal(10, 2)
+  imageUrl    String?
+  ingredients String[]    @default([])
+  allergens   String[]    @default([])
+  badges      String[]    @default([]) // nouveau, populaire, épicé, végétarien, premium
+  prepMinutes Int         @default(12)
+  vatRate     Decimal     @default(10) @db.Decimal(5, 2)
+  available   Boolean     @default(true)
+  visible     Boolean     @default(true)
+  featured    Boolean     @default(false)
+  position    Int         @default(0)
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  category       Category?              @relation(fields: [categoryId], references: [id])
+  categoryId     String?
+  optionGroups   OptionGroupOnProduct[]
+  orderItems     OrderItem[]
+  menuComponents MenuComponent[]
+  reviews        Review[]
+  recipe         ProductIngredient[]
+
+  @@index([type])
+  @@index([categoryId])
+}
+
+model OptionGroup {
+  id         String                 @id @default(cuid())
+  name       String // ex. "Taille", "Suppléments"
+  required   Boolean                @default(false)
+  multiple   Boolean                @default(false) // choix multiple ou unique
+  minChoices Int                    @default(0)
+  maxChoices Int?
+  position   Int                    @default(0)
+  options    ProductOption[]
+  products   OptionGroupOnProduct[]
+}
+
+model ProductOption {
+  id               String            @id @default(cuid())
+  group            OptionGroup       @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  groupId          String
+  name             String // ex. "Pâte fine", "Fromage en plus"
+  priceDelta       Decimal           @default(0) @db.Decimal(10, 2)
+  position         Int               @default(0)
+  orderItemOptions OrderItemOption[]
+}
+
+// Table de liaison produit <-> groupe d'options.
+model OptionGroupOnProduct {
+  product   Product     @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId String
+  group     OptionGroup @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  groupId   String
+
+  @@id([productId, groupId])
+}
+
+// ----------------------------------------------------------------------------
+// Menus / formules
+// ----------------------------------------------------------------------------
+
+model Menu {
+  id           String          @id @default(cuid())
+  name         String
+  slug         String          @unique
+  description  String?
+  price        Decimal         @db.Decimal(10, 2)
+  imageUrl     String?
+  badge        String?
+  availability String? // "Midi en semaine"…
+  active       Boolean         @default(true)
+  position     Int             @default(0)
+  components   MenuComponent[]
+}
+
+// Élément composant un menu (ex. "1 pizza au choix", "1 boisson").
+model MenuComponent {
+  id        String   @id @default(cuid())
+  menu      Menu     @relation(fields: [menuId], references: [id], onDelete: Cascade)
+  menuId    String
+  label     String
+  product   Product? @relation(fields: [productId], references: [id])
+  productId String?
+  quantity  Int      @default(1)
+}
+
+// ----------------------------------------------------------------------------
+// Commandes
+// ----------------------------------------------------------------------------
+
+model Order {
+  id      String       @id @default(cuid())
+  number  String       @unique // ex. "CMD-2026-0042"
+  channel OrderChannel @default(DELIVERY)
+  status  OrderStatus  @default(NEW)
+
+  customer        Customer? @relation(fields: [customerId], references: [id])
+  customerId      String?
+  address         Address?  @relation(fields: [addressId], references: [id])
+  addressId       String?
+  // Snapshot des coordonnées (au cas où le client serait modifié/anonymisé).
+  customerName    String
+  customerPhone   String
+  // Adresse de livraison en texte libre (commandes web / invités sans compte).
+  deliveryAddress String?
+
+  subtotal    Decimal @db.Decimal(10, 2)
+  deliveryFee Decimal @default(0) @db.Decimal(10, 2)
+  discount    Decimal @default(0) @db.Decimal(10, 2)
+  total       Decimal @db.Decimal(10, 2)
+
+  promoCode   PromoCode? @relation(fields: [promoCodeId], references: [id])
+  promoCodeId String?
+
+  customerNote String?
+  internalNote String?
+  allergyNote  String?
+  scheduledFor DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  items        OrderItem[]
+  payment      Payment?
+  delivery     Delivery?
+  review       Review?
+  statusEvents OrderStatusEvent[]
+
+  @@index([status])
+  @@index([channel])
+  @@index([createdAt])
+}
+
+model OrderItem {
+  id        String            @id @default(cuid())
+  order     Order             @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  orderId   String
+  product   Product?          @relation(fields: [productId], references: [id])
+  productId String?
+  name      String // snapshot du nom au moment de la commande
+  unitPrice Decimal           @db.Decimal(10, 2)
+  quantity  Int               @default(1)
+  lineTotal Decimal           @db.Decimal(10, 2)
+  options   OrderItemOption[]
+}
+
+model OrderItemOption {
+  id          String         @id @default(cuid())
+  orderItem   OrderItem      @relation(fields: [orderItemId], references: [id], onDelete: Cascade)
+  orderItemId String
+  option      ProductOption? @relation(fields: [optionId], references: [id])
+  optionId    String?
+  name        String
+  priceDelta  Decimal        @default(0) @db.Decimal(10, 2)
+}
+
+// Historique des changements de statut d'une commande.
+model OrderStatusEvent {
+  id        String      @id @default(cuid())
+  order     Order       @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  orderId   String
+  status    OrderStatus
+  note      String?
+  createdAt DateTime    @default(now())
+}
+
+// ----------------------------------------------------------------------------
+// Paiements
+// ----------------------------------------------------------------------------
+
+model Payment {
+  id             String        @id @default(cuid())
+  order          Order         @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  orderId        String        @unique
+  method         PaymentMethod @default(CARD_ONLINE)
+  status         PaymentStatus @default(PENDING)
+  amount         Decimal       @db.Decimal(10, 2)
+  refundedAmount Decimal       @default(0) @db.Decimal(10, 2)
+  stripeId       String? // PaymentIntent Stripe
+  paidAt         DateTime?
+  createdAt      DateTime      @default(now())
+
+  @@index([status])
+}
+
+// Idempotence des webhooks Stripe : on enregistre l'id d'événement déjà traité
+// pour ignorer les rejeux (Stripe livre « at-least-once »).
+model ProcessedWebhookEvent {
+  id          String   @id // event.id Stripe
+  type        String
+  processedAt DateTime @default(now())
+}
+
+// ----------------------------------------------------------------------------
+// Livraison
+// ----------------------------------------------------------------------------
+
+model DeliveryZone {
+  id          String   @id @default(cuid())
+  name        String
+  // Critère de zone : liste de codes postaux et/ou rayon en km.
+  postalCodes String[] @default([])
+  radiusKm    Decimal? @db.Decimal(5, 2)
+  fee         Decimal  @db.Decimal(10, 2)
+  minOrder    Decimal  @default(0) @db.Decimal(10, 2)
+  etaMinutes  Int      @default(30)
+  active      Boolean  @default(true)
+}
+
+model DeliveryDriver {
+  id         String     @id @default(cuid())
+  name       String
+  phone      String
+  available  Boolean    @default(true)
+  // Lien optionnel vers un compte utilisateur (rôle DRIVER).
+  user       User?      @relation(fields: [userId], references: [id])
+  userId     String?    @unique
+  deliveries Delivery[]
+}
+
+model Delivery {
+  id          String          @id @default(cuid())
+  order       Order           @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  orderId     String          @unique
+  driver      DeliveryDriver? @relation(fields: [driverId], references: [id])
+  driverId    String?
+  status      DeliveryStatus  @default(UNASSIGNED)
+  assignedAt  DateTime?
+  deliveredAt DateTime?
+  note        String?
+
+  @@index([status])
+}
+
+// ----------------------------------------------------------------------------
+// Réservations
+// ----------------------------------------------------------------------------
+
+model Reservation {
+  id         String            @id @default(cuid())
+  customer   Customer?         @relation(fields: [customerId], references: [id])
+  customerId String?
+  name       String
+  phone      String
+  email      String?
+  date       DateTime
+  partySize  Int
+  status     ReservationStatus @default(PENDING)
+  note       String?
+  createdAt  DateTime          @default(now())
+
+  @@index([date])
+  @@index([status])
+}
+
+// ----------------------------------------------------------------------------
+// Promotions & fidélité
+// ----------------------------------------------------------------------------
+
+model PromoCode {
+  id             String         @id @default(cuid())
+  code           String         @unique
+  description    String?
+  type           PromoType
+  value          Decimal        @default(0) @db.Decimal(10, 2) // % ou montant
+  target         DiscountTarget @default(CART)
+  minOrder       Decimal        @default(0) @db.Decimal(10, 2)
+  startsAt       DateTime?
+  endsAt         DateTime?
+  maxUses        Int?
+  usedCount      Int            @default(0)
+  firstOrderOnly Boolean        @default(false)
+  active         Boolean        @default(true)
+  createdAt      DateTime       @default(now())
+  orders         Order[]
+}
+
+model LoyaltyAccount {
+  id           String               @id @default(cuid())
+  customer     Customer             @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  customerId   String               @unique
+  points       Int                  @default(0)
+  tier         String               @default("Bronze")
+  transactions LoyaltyTransaction[]
+}
+
+model LoyaltyTransaction {
+  id        String         @id @default(cuid())
+  account   LoyaltyAccount @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  accountId String
+  points    Int // positif (gain) ou négatif (utilisation)
+  reason    String
+  createdAt DateTime       @default(now())
+}
+
+// ----------------------------------------------------------------------------
+// Marketing & avis
+// ----------------------------------------------------------------------------
+
+model Campaign {
+  id          String          @id @default(cuid())
+  name        String
+  channel     CampaignChannel @default(EMAIL)
+  status      CampaignStatus  @default(DRAFT)
+  segment     String // ex. "inactifs_30j"
+  subject     String?
+  content     String
+  scheduledAt DateTime?
+  sentAt      DateTime?
+  recipients  Int             @default(0)
+  openRate    Decimal?        @db.Decimal(5, 2)
+  clickRate   Decimal?        @db.Decimal(5, 2)
+  createdAt   DateTime        @default(now())
+}
+
+model Review {
+  id         String       @id @default(cuid())
+  customer   Customer?    @relation(fields: [customerId], references: [id])
+  customerId String?
+  product    Product?     @relation(fields: [productId], references: [id])
+  productId  String?
+  order      Order?       @relation(fields: [orderId], references: [id])
+  orderId    String?      @unique
+  authorName String
+  rating     Int // 1..5
+  comment    String?
+  status     ReviewStatus @default(PENDING)
+  reply      String?
+  createdAt  DateTime     @default(now())
+
+  @@index([status])
+  @@index([rating])
+}
+
+// ----------------------------------------------------------------------------
+// Médiathèque & contenu site
+// ----------------------------------------------------------------------------
+
+model MediaFile {
+  id        String   @id @default(cuid())
+  url       String
+  name      String
+  folder    String   @default("general") // pizzas, menus, restaurant, equipe…
+  alt       String?
+  width     Int?
+  height    Int?
+  sizeBytes Int?
+  mimeType  String?
+  createdAt DateTime @default(now())
+
+  @@index([folder])
+}
+
+// Blocs de contenu éditables du site public (hero, sections…).
+model SiteContentBlock {
+  id        String   @id @default(cuid())
+  key       String   @unique // ex. "hero", "delivery", "footer"
+  title     String?
+  body      Json? // contenu structuré du bloc
+  visible   Boolean  @default(true)
+  updatedAt DateTime @updatedAt
+}
+
+// ----------------------------------------------------------------------------
+// Paramètres restaurant, horaires & stocks
+// ----------------------------------------------------------------------------
+
+model RestaurantSetting {
+  id                 String   @id @default("default") // singleton
+  name               String   @default("La Bella Pizzeria")
+  logoUrl            String?
+  faviconUrl         String?
+  address            String?
+  phone              String?
+  email              String?
+  currency           String   @default("EUR")
+  locale             String   @default("fr-FR")
+  vatRate            Decimal  @default(10) @db.Decimal(5, 2)
+  minOrder           Decimal  @default(15) @db.Decimal(10, 2)
+  defaultDeliveryFee Decimal  @default(2.5) @db.Decimal(10, 2)
+  defaultPrepMinutes Int      @default(20)
+  ordersPaused       Boolean  @default(false)
+  aiEnabled          Boolean  @default(true)
+  socials            Json?
+  googleMapsUrl      String?
+  updatedAt          DateTime @updatedAt
+}
+
+model OpeningHour {
+  id        String  @id @default(cuid())
+  dayOfWeek Int // 0 = dimanche … 6 = samedi
+  kind      String  @default("dining") // dining, delivery, pickup
+  opensAt   String // "11:00"
+  closesAt  String // "23:00"
+  closed    Boolean @default(false)
+}
+
+// Fermetures exceptionnelles / jours fériés.
+model SpecialClosure {
+  id     String   @id @default(cuid())
+  date   DateTime
+  reason String?
+}
+
+model StockItem {
+  id        String              @id @default(cuid())
+  name      String // mozzarella, pâte, sauce tomate…
+  unit      String              @default("kg")
+  quantity  Decimal             @db.Decimal(10, 2)
+  threshold Decimal             @db.Decimal(10, 2) // seuil d'alerte
+  status    StockStatus         @default(OK)
+  updatedAt DateTime            @updatedAt
+  usedIn    ProductIngredient[]
+}
+
+// Lien recette : quel ingrédient entre dans quel produit.
+model ProductIngredient {
+  id        String    @id @default(cuid())
+  product   Product   @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId String
+  stockItem StockItem @relation(fields: [stockId], references: [id], onDelete: Cascade)
+  stockId   String
+  quantity  Decimal   @db.Decimal(10, 2)
+
+  @@unique([productId, stockId])
+}
+
+// ----------------------------------------------------------------------------
+// Notifications, IA & journal d'activité
+// ----------------------------------------------------------------------------
+
+model Notification {
+  id        String           @id @default(cuid())
+  type      NotificationType
+  title     String
+  body      String?
+  link      String?
+  read      Boolean          @default(false)
+  user      User?            @relation(fields: [userId], references: [id])
+  userId    String?
+  createdAt DateTime         @default(now())
+
+  @@index([read])
+}
+
+model AiConversation {
+  id         String      @id @default(cuid())
+  customer   Customer?   @relation(fields: [customerId], references: [id])
+  customerId String?
+  channel    String      @default("web") // web, sms…
+  resolved   Boolean     @default(false)
+  createdAt  DateTime    @default(now())
+  messages   AiMessage[]
+}
+
+model AiMessage {
+  id             String         @id @default(cuid())
+  conversation   AiConversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  conversationId String
+  role           String // user | assistant | system
+  content        String
+  createdAt      DateTime       @default(now())
+}
+
+model ActivityLog {
+  id        String   @id @default(cuid())
+  user      User?    @relation(fields: [userId], references: [id])
+  userId    String?
+  action    String // ex. "order.status.update"
+  entity    String? // ex. "Order"
+  entityId  String?
+  meta      Json?
+  createdAt DateTime @default(now())
+
+  @@index([entity])
+  @@index([createdAt])
+}

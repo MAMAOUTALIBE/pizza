@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 640" width="800" height="640" role="img" aria-label="Pepperoni">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="38%" r="75%">
+      <stop offset="0%" stop-color="#2a211c"/><stop offset="100%" stop-color="#0f0c0b"/>
+    </radialGradient>
+    <radialGradient id="crust" cx="50%" cy="45%" r="60%">
+      <stop offset="60%" stop-color="#e6b25a"/><stop offset="88%" stop-color="#cf8a32"/><stop offset="100%" stop-color="#9c5a1c"/>
+    </radialGradient>
+    <radialGradient id="sauce" cx="50%" cy="45%" r="60%">
+      <stop offset="0%" stop-color="#d6452b"/><stop offset="100%" stop-color="#a32c18"/>
+    </radialGradient>
+  </defs>
+  <rect width="800" height="640" fill="url(#bg)"/>
+  <circle cx="400" cy="290" r="236" fill="#000" opacity="0.35"/>
+  <circle cx="400" cy="290" r="230" fill="url(#crust)"/>
+  <circle cx="400" cy="290" r="204" fill="url(#sauce)"/>
+  <circle cx="332.2" cy="313.3" r="30.8" fill="#f4e3b8" opacity="0.55"/><circle cx="483.8" cy="382.7" r="21.6" fill="#f4e3b8" opacity="0.55"/><circle cx="408.6" cy="255.4" r="32.6" fill="#f4e3b8" opacity="0.55"/><circle cx="414.8" cy="263.4" r="28.8" fill="#f4e3b8" opacity="0.55"/><circle cx="321.2" cy="132.7" r="19.4" fill="#f4e3b8" opacity="0.55"/><circle cx="396.8" cy="231.2" r="35.7" fill="#f4e3b8" opacity="0.55"/><circle cx="338.3" cy="313.0" r="20.7" fill="#f4e3b8" opacity="0.55"/><circle cx="433.0" cy="388.2" r="27.8" fill="#f4e3b8" opacity="0.55"/><circle cx="330.2" cy="326.4" r="21.9" fill="#f4e3b8" opacity="0.55"/><circle cx="343.5" cy="277.4" r="34.3" fill="#f4e3b8" opacity="0.55"/>
+  <circle cx="312.2" cy="403.1" r="10.2" fill="#a83025" opacity="0.95"/><circle cx="418.3" cy="365.0" r="13.4" fill="#a83025" opacity="0.95"/><circle cx="414.5" cy="340.5" r="14.8" fill="#f0d68a" opacity="0.85"/><circle cx="401.9" cy="158.4" r="11.8" fill="#a83025" opacity="0.95"/><circle cx="390.8" cy="366.5" r="11.9" fill="#a83025" opacity="0.95"/><circle cx="447.6" cy="379.5" r="18.7" fill="#f0d68a" opacity="0.85"/><circle cx="484.6" cy="209.3" r="14.6" fill="#a83025" opacity="0.95"/><circle cx="463.3" cy="114.7" r="10.3" fill="#a83025" opacity="0.95"/><circle cx="351.3" cy="343.1" r="20.5" fill="#f0d68a" opacity="0.85"/><circle cx="535.9" cy="276.6" r="14.4" fill="#a83025" opacity="0.95"/><circle cx="528.7" cy="351.0" r="10.0" fill="#a83025" opacity="0.95"/><circle cx="546.6" cy="330.8" r="14.0" fill="#f0d68a" opacity="0.85"/><circle cx="367.1" cy="360.9" r="12.6" fill="#a83025" opacity="0.95"/><circle cx="347.2" cy="412.0" r="12.6" fill="#a83025" opacity="0.95"/>
+  <text x="400" y="588" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="46" fill="#f5ecdd" font-style="italic">Pepperoni</text>
+  <text x="400" y="618" text-anchor="middle" font-family="Arial, sans-serif" font-size="15" letter-spacing="4" fill="#e8590c">LA BELLA · PIZZERIA</text>
+</svg>

@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 640" width="800" height="640" role="img" aria-label="Regina">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="38%" r="75%">
+      <stop offset="0%" stop-color="#2a211c"/><stop offset="100%" stop-color="#0f0c0b"/>
+    </radialGradient>
+    <radialGradient id="crust" cx="50%" cy="45%" r="60%">
+      <stop offset="60%" stop-color="#e6b25a"/><stop offset="88%" stop-color="#cf8a32"/><stop offset="100%" stop-color="#9c5a1c"/>
+    </radialGradient>
+    <radialGradient id="sauce" cx="50%" cy="45%" r="60%">
+      <stop offset="0%" stop-color="#d6452b"/><stop offset="100%" stop-color="#a32c18"/>
+    </radialGradient>
+  </defs>
+  <rect width="800" height="640" fill="url(#bg)"/>
+  <circle cx="400" cy="290" r="236" fill="#000" opacity="0.35"/>
+  <circle cx="400" cy="290" r="230" fill="url(#crust)"/>
+  <circle cx="400" cy="290" r="204" fill="url(#sauce)"/>
+  <circle cx="352.7" cy="200.0" r="25.2" fill="#f4e3b8" opacity="0.55"/><circle cx="442.0" cy="228.7" r="29.6" fill="#f4e3b8" opacity="0.55"/><circle cx="371.6" cy="227.3" r="18.0" fill="#f4e3b8" opacity="0.55"/><circle cx="277.3" cy="200.5" r="21.7" fill="#f4e3b8" opacity="0.55"/><circle cx="469.8" cy="297.0" r="27.7" fill="#f4e3b8" opacity="0.55"/><circle cx="371.6" cy="331.3" r="23.3" fill="#f4e3b8" opacity="0.55"/><circle cx="558.6" cy="296.8" r="39.7" fill="#f4e3b8" opacity="0.55"/><circle cx="277.1" cy="362.2" r="19.9" fill="#f4e3b8" opacity="0.55"/><circle cx="468.0" cy="285.1" r="39.2" fill="#f4e3b8" opacity="0.55"/><circle cx="501.5" cy="416.7" r="18.7" fill="#f4e3b8" opacity="0.55"/>
+  <circle cx="329.8" cy="138.5" r="12.1" fill="#e79a93" opacity="0.95"/><circle cx="362.0" cy="400.7" r="10.0" fill="#cdbfa6" opacity="0.95"/><circle cx="403.7" cy="177.5" r="18.9" fill="#f0d68a" opacity="0.85"/><circle cx="336.5" cy="308.2" r="12.3" fill="#e79a93" opacity="0.95"/><circle cx="417.1" cy="253.7" r="13.3" fill="#cdbfa6" opacity="0.95"/><circle cx="390.3" cy="386.7" r="14.3" fill="#f0d68a" opacity="0.85"/><circle cx="437.9" cy="434.8" r="15.8" fill="#e79a93" opacity="0.95"/><circle cx="500.5" cy="335.0" r="12.4" fill="#cdbfa6" opacity="0.95"/><circle cx="398.5" cy="331.1" r="17.5" fill="#f0d68a" opacity="0.85"/><circle cx="455.1" cy="435.0" r="17.4" fill="#e79a93" opacity="0.95"/><circle cx="382.8" cy="352.2" r="14.0" fill="#cdbfa6" opacity="0.95"/><circle cx="530.3" cy="269.2" r="14.5" fill="#f0d68a" opacity="0.85"/><circle cx="332.2" cy="191.2" r="11.8" fill="#e79a93" opacity="0.95"/><circle cx="398.9" cy="199.2" r="14.2" fill="#cdbfa6" opacity="0.95"/>
+  <text x="400" y="588" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="46" fill="#f5ecdd" font-style="italic">Regina</text>
+  <text x="400" y="618" text-anchor="middle" font-family="Arial, sans-serif" font-size="15" letter-spacing="4" fill="#e8590c">LA BELLA · PIZZERIA</text>
+</svg>

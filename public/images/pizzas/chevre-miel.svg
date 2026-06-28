@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 640" width="800" height="640" role="img" aria-label="Chèvre Miel">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="38%" r="75%">
+      <stop offset="0%" stop-color="#2a211c"/><stop offset="100%" stop-color="#0f0c0b"/>
+    </radialGradient>
+    <radialGradient id="crust" cx="50%" cy="45%" r="60%">
+      <stop offset="60%" stop-color="#e6b25a"/><stop offset="88%" stop-color="#cf8a32"/><stop offset="100%" stop-color="#9c5a1c"/>
+    </radialGradient>
+    <radialGradient id="sauce" cx="50%" cy="45%" r="60%">
+      <stop offset="0%" stop-color="#d6452b"/><stop offset="100%" stop-color="#a32c18"/>
+    </radialGradient>
+  </defs>
+  <rect width="800" height="640" fill="url(#bg)"/>
+  <circle cx="400" cy="290" r="236" fill="#000" opacity="0.35"/>
+  <circle cx="400" cy="290" r="230" fill="url(#crust)"/>
+  <circle cx="400" cy="290" r="204" fill="url(#sauce)"/>
+  <circle cx="519.2" cy="257.1" r="24.3" fill="#f4e3b8" opacity="0.55"/><circle cx="502.4" cy="145.3" r="22.9" fill="#f4e3b8" opacity="0.55"/><circle cx="263.5" cy="353.1" r="20.8" fill="#f4e3b8" opacity="0.55"/><circle cx="478.7" cy="366.7" r="27.2" fill="#f4e3b8" opacity="0.55"/><circle cx="334.3" cy="393.2" r="29.3" fill="#f4e3b8" opacity="0.55"/><circle cx="305.7" cy="290.2" r="36.2" fill="#f4e3b8" opacity="0.55"/><circle cx="492.1" cy="300.4" r="35.2" fill="#f4e3b8" opacity="0.55"/><circle cx="330.6" cy="460.4" r="35.3" fill="#f4e3b8" opacity="0.55"/><circle cx="433.7" cy="180.1" r="23.7" fill="#f4e3b8" opacity="0.55"/><circle cx="487.3" cy="219.6" r="31.7" fill="#f4e3b8" opacity="0.55"/>
+  <circle cx="474.1" cy="143.9" r="16.0" fill="#f3efe4" opacity="0.9"/><circle cx="429.3" cy="111.1" r="10.8" fill="#e0a92e" opacity="0.95"/><circle cx="272.5" cy="213.8" r="5.8" fill="#6a9a3b" opacity="0.95"/><circle cx="339.1" cy="177.5" r="17.1" fill="#f3efe4" opacity="0.9"/><circle cx="227.6" cy="347.8" r="9.9" fill="#e0a92e" opacity="0.95"/><circle cx="362.9" cy="352.9" r="8.3" fill="#6a9a3b" opacity="0.95"/><circle cx="396.4" cy="126.2" r="16.2" fill="#f3efe4" opacity="0.9"/><circle cx="454.0" cy="329.4" r="11.2" fill="#e0a92e" opacity="0.95"/><circle cx="455.8" cy="156.8" r="8.1" fill="#6a9a3b" opacity="0.95"/><circle cx="349.7" cy="441.0" r="15.2" fill="#f3efe4" opacity="0.9"/><circle cx="572.5" cy="269.8" r="11.3" fill="#e0a92e" opacity="0.95"/><circle cx="387.1" cy="389.4" r="6.1" fill="#6a9a3b" opacity="0.95"/><circle cx="269.7" cy="212.9" r="15.8" fill="#f3efe4" opacity="0.9"/><circle cx="351.1" cy="365.3" r="11.3" fill="#e0a92e" opacity="0.95"/>
+  <text x="400" y="588" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="46" fill="#f5ecdd" font-style="italic">Chèvre Miel</text>
+  <text x="400" y="618" text-anchor="middle" font-family="Arial, sans-serif" font-size="15" letter-spacing="4" fill="#e8590c">LA BELLA · PIZZERIA</text>
+</svg>

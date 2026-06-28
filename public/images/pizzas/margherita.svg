@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 640" width="800" height="640" role="img" aria-label="Margherita">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="38%" r="75%">
+      <stop offset="0%" stop-color="#2a211c"/><stop offset="100%" stop-color="#0f0c0b"/>
+    </radialGradient>
+    <radialGradient id="crust" cx="50%" cy="45%" r="60%">
+      <stop offset="60%" stop-color="#e6b25a"/><stop offset="88%" stop-color="#cf8a32"/><stop offset="100%" stop-color="#9c5a1c"/>
+    </radialGradient>
+    <radialGradient id="sauce" cx="50%" cy="45%" r="60%">
+      <stop offset="0%" stop-color="#d6452b"/><stop offset="100%" stop-color="#a32c18"/>
+    </radialGradient>
+  </defs>
+  <rect width="800" height="640" fill="url(#bg)"/>
+  <circle cx="400" cy="290" r="236" fill="#000" opacity="0.35"/>
+  <circle cx="400" cy="290" r="230" fill="url(#crust)"/>
+  <circle cx="400" cy="290" r="204" fill="url(#sauce)"/>
+  <circle cx="465.8" cy="252.8" r="28.5" fill="#f4e3b8" opacity="0.55"/><circle cx="527.8" cy="280.3" r="40.0" fill="#f4e3b8" opacity="0.55"/><circle cx="510.3" cy="158.7" r="23.9" fill="#f4e3b8" opacity="0.55"/><circle cx="507.6" cy="258.2" r="33.4" fill="#f4e3b8" opacity="0.55"/><circle cx="328.6" cy="128.1" r="33.8" fill="#f4e3b8" opacity="0.55"/><circle cx="290.0" cy="313.3" r="34.1" fill="#f4e3b8" opacity="0.55"/><circle cx="372.4" cy="147.3" r="21.5" fill="#f4e3b8" opacity="0.55"/><circle cx="515.3" cy="148.7" r="27.1" fill="#f4e3b8" opacity="0.55"/><circle cx="358.6" cy="413.3" r="38.3" fill="#f4e3b8" opacity="0.55"/><circle cx="346.2" cy="302.4" r="20.0" fill="#f4e3b8" opacity="0.55"/>
+  <circle cx="477.0" cy="262.9" r="12.6" fill="#d6452b" opacity="0.95"/><circle cx="335.6" cy="281.6" r="7.9" fill="#6a9a3b" opacity="0.95"/><circle cx="459.2" cy="315.7" r="19.7" fill="#f0d68a" opacity="0.85"/><circle cx="543.0" cy="286.6" r="16.3" fill="#d6452b" opacity="0.95"/><circle cx="392.3" cy="227.7" r="10.4" fill="#6a9a3b" opacity="0.95"/><circle cx="325.6" cy="119.2" r="18.2" fill="#f0d68a" opacity="0.85"/><circle cx="380.0" cy="414.6" r="11.8" fill="#d6452b" opacity="0.95"/><circle cx="483.0" cy="244.0" r="10.6" fill="#6a9a3b" opacity="0.95"/><circle cx="551.6" cy="322.2" r="18.5" fill="#f0d68a" opacity="0.85"/><circle cx="467.2" cy="304.5" r="13.6" fill="#d6452b" opacity="0.95"/><circle cx="374.4" cy="331.7" r="9.6" fill="#6a9a3b" opacity="0.95"/><circle cx="298.5" cy="411.0" r="14.6" fill="#f0d68a" opacity="0.85"/><circle cx="243.2" cy="268.9" r="10.5" fill="#d6452b" opacity="0.95"/><circle cx="410.8" cy="401.8" r="8.5" fill="#6a9a3b" opacity="0.95"/>
+  <text x="400" y="588" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="46" fill="#f5ecdd" font-style="italic">Margherita</text>
+  <text x="400" y="618" text-anchor="middle" font-family="Arial, sans-serif" font-size="15" letter-spacing="4" fill="#e8590c">LA BELLA · PIZZERIA</text>
+</svg>

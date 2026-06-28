@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 640" width="800" height="640" role="img" aria-label="Calzone">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="38%" r="75%">
+      <stop offset="0%" stop-color="#2a211c"/><stop offset="100%" stop-color="#0f0c0b"/>
+    </radialGradient>
+    <radialGradient id="crust" cx="50%" cy="45%" r="60%">
+      <stop offset="60%" stop-color="#e6b25a"/><stop offset="88%" stop-color="#cf8a32"/><stop offset="100%" stop-color="#9c5a1c"/>
+    </radialGradient>
+    <radialGradient id="sauce" cx="50%" cy="45%" r="60%">
+      <stop offset="0%" stop-color="#d6452b"/><stop offset="100%" stop-color="#a32c18"/>
+    </radialGradient>
+  </defs>
+  <rect width="800" height="640" fill="url(#bg)"/>
+  <circle cx="400" cy="290" r="236" fill="#000" opacity="0.35"/>
+  <circle cx="400" cy="290" r="230" fill="url(#crust)"/>
+  <circle cx="400" cy="290" r="204" fill="url(#sauce)"/>
+  <circle cx="364.6" cy="144.5" r="21.0" fill="#f4e3b8" opacity="0.55"/><circle cx="366.0" cy="171.4" r="34.5" fill="#f4e3b8" opacity="0.55"/><circle cx="399.3" cy="337.8" r="36.9" fill="#f4e3b8" opacity="0.55"/><circle cx="417.8" cy="141.5" r="37.4" fill="#f4e3b8" opacity="0.55"/><circle cx="317.7" cy="135.1" r="23.2" fill="#f4e3b8" opacity="0.55"/><circle cx="376.8" cy="312.1" r="25.5" fill="#f4e3b8" opacity="0.55"/><circle cx="364.0" cy="389.8" r="31.4" fill="#f4e3b8" opacity="0.55"/><circle cx="497.5" cy="183.7" r="28.1" fill="#f4e3b8" opacity="0.55"/><circle cx="347.2" cy="295.2" r="24.7" fill="#f4e3b8" opacity="0.55"/><circle cx="346.4" cy="264.6" r="30.4" fill="#f4e3b8" opacity="0.55"/>
+  <circle cx="307.8" cy="253.8" r="16.7" fill="#f0d68a" opacity="0.85"/><circle cx="322.1" cy="260.4" r="17.4" fill="#e79a93" opacity="0.95"/><circle cx="392.5" cy="335.9" r="14.0" fill="#cdbfa6" opacity="0.95"/><circle cx="434.8" cy="327.3" r="13.4" fill="#f0d68a" opacity="0.85"/><circle cx="245.3" cy="252.1" r="16.2" fill="#e79a93" opacity="0.95"/><circle cx="515.7" cy="222.6" r="10.3" fill="#cdbfa6" opacity="0.95"/><circle cx="320.7" cy="120.3" r="14.0" fill="#f0d68a" opacity="0.85"/><circle cx="401.0" cy="372.0" r="16.7" fill="#e79a93" opacity="0.95"/><circle cx="576.1" cy="330.0" r="12.0" fill="#cdbfa6" opacity="0.95"/><circle cx="307.5" cy="314.0" r="20.4" fill="#f0d68a" opacity="0.85"/><circle cx="574.6" cy="217.0" r="13.5" fill="#e79a93" opacity="0.95"/><circle cx="455.4" cy="240.6" r="9.5" fill="#cdbfa6" opacity="0.95"/><circle cx="377.4" cy="179.2" r="18.7" fill="#f0d68a" opacity="0.85"/><circle cx="441.9" cy="236.1" r="15.4" fill="#e79a93" opacity="0.95"/>
+  <text x="400" y="588" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="46" fill="#f5ecdd" font-style="italic">Calzone</text>
+  <text x="400" y="618" text-anchor="middle" font-family="Arial, sans-serif" font-size="15" letter-spacing="4" fill="#e8590c">LA BELLA · PIZZERIA</text>
+</svg>

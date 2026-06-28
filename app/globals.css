@@ -1,0 +1,115 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================
+   La Bella Pizzeria — couche de base du design system
+   ============================================================ */
+
+@layer base {
+  :root {
+    --color-cream: 245 236 221;
+    --color-charcoal: 24 20 18;
+    --header-height: 5rem;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-cream-100 text-charcoal-900 font-sans antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Focus visible cohérent et accessible sur toute la marque */
+  :focus-visible {
+    @apply outline-none ring-2 ring-terracotta-500 ring-offset-2 ring-offset-cream-100;
+  }
+
+  /* Titres : police condensée d'impact par défaut */
+  h1,
+  h2,
+  h3 {
+    @apply font-display tracking-tight;
+    text-wrap: balance;
+  }
+
+  /* Respect des préférences de mouvement réduit */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer components {
+  /* Conteneur de contenu standard du site */
+  .container-page {
+    @apply mx-auto w-full max-w-7xl px-5 sm:px-8 lg:px-10;
+  }
+
+  /* Sur-titre rouge en petites capitales (cf. « DÉCOUVREZ », « NOTRE ENGAGEMENT ») */
+  .eyebrow {
+    @apply inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.25em] text-tomato-500;
+  }
+
+  /* Lien de navigation avec soulignement animé */
+  .nav-link {
+    @apply relative text-sm font-medium uppercase tracking-wide transition-colors duration-200;
+  }
+  .nav-link::after {
+    content: "";
+    @apply absolute -bottom-1.5 left-0 h-0.5 w-0 bg-terracotta-500 transition-all duration-300;
+  }
+  .nav-link:hover::after,
+  .nav-link[data-active="true"]::after {
+    @apply w-full;
+  }
+}
+
+@layer utilities {
+  /* Dégradé de texte orange → rouge pour les titres d'accent */
+  .text-gradient-warm {
+    @apply bg-gradient-to-r from-terracotta-400 via-terracotta-500 to-tomato-600 bg-clip-text text-transparent;
+  }
+
+  /* Texture grain subtile pour les sections crème */
+  .bg-paper {
+    background-color: theme("colors.cream.100");
+    background-image: radial-gradient(
+        theme("colors.cream.300") 0.5px,
+        transparent 0.5px
+      );
+    background-size: 22px 22px;
+  }
+
+  /* Apparition au scroll appliquée via IntersectionObserver (cf. lib/useReveal) */
+  .reveal {
+    opacity: 0;
+    transform: translateY(22px);
+    transition:
+      opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+      transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: opacity, transform;
+  }
+  .reveal.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Masquage propre de la scrollbar pour les carrousels horizontaux */
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+}

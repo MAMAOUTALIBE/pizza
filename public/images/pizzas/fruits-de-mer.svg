@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 640" width="800" height="640" role="img" aria-label="Frutti di Mare">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="38%" r="75%">
+      <stop offset="0%" stop-color="#2a211c"/><stop offset="100%" stop-color="#0f0c0b"/>
+    </radialGradient>
+    <radialGradient id="crust" cx="50%" cy="45%" r="60%">
+      <stop offset="60%" stop-color="#e6b25a"/><stop offset="88%" stop-color="#cf8a32"/><stop offset="100%" stop-color="#9c5a1c"/>
+    </radialGradient>
+    <radialGradient id="sauce" cx="50%" cy="45%" r="60%">
+      <stop offset="0%" stop-color="#d6452b"/><stop offset="100%" stop-color="#a32c18"/>
+    </radialGradient>
+  </defs>
+  <rect width="800" height="640" fill="url(#bg)"/>
+  <circle cx="400" cy="290" r="236" fill="#000" opacity="0.35"/>
+  <circle cx="400" cy="290" r="230" fill="url(#crust)"/>
+  <circle cx="400" cy="290" r="204" fill="url(#sauce)"/>
+  <circle cx="407.4" cy="331.1" r="36.4" fill="#f4e3b8" opacity="0.55"/><circle cx="245.8" cy="374.1" r="35.7" fill="#f4e3b8" opacity="0.55"/><circle cx="528.3" cy="190.3" r="25.1" fill="#f4e3b8" opacity="0.55"/><circle cx="464.0" cy="315.9" r="35.9" fill="#f4e3b8" opacity="0.55"/><circle cx="337.1" cy="394.3" r="33.1" fill="#f4e3b8" opacity="0.55"/><circle cx="444.0" cy="341.2" r="26.1" fill="#f4e3b8" opacity="0.55"/><circle cx="496.7" cy="198.8" r="23.8" fill="#f4e3b8" opacity="0.55"/><circle cx="464.2" cy="282.4" r="35.6" fill="#f4e3b8" opacity="0.55"/><circle cx="456.2" cy="220.6" r="26.5" fill="#f4e3b8" opacity="0.55"/><circle cx="501.9" cy="240.0" r="27.8" fill="#f4e3b8" opacity="0.55"/>
+  <circle cx="517.6" cy="311.8" r="9.2" fill="#e98a73" opacity="0.95"/><circle cx="535.5" cy="419.6" r="5.8" fill="#4e7d2e" opacity="0.95"/><circle cx="320.6" cy="171.7" r="10.5" fill="#1c1c1c" opacity="0.95"/><circle cx="445.0" cy="304.3" r="11.9" fill="#e98a73" opacity="0.95"/><circle cx="377.1" cy="178.3" r="8.9" fill="#4e7d2e" opacity="0.95"/><circle cx="492.9" cy="340.0" r="8.5" fill="#1c1c1c" opacity="0.95"/><circle cx="319.6" cy="264.9" r="9.0" fill="#e98a73" opacity="0.95"/><circle cx="291.6" cy="259.8" r="7.6" fill="#4e7d2e" opacity="0.95"/><circle cx="297.8" cy="302.6" r="8.7" fill="#1c1c1c" opacity="0.95"/><circle cx="419.6" cy="173.5" r="12.8" fill="#e98a73" opacity="0.95"/><circle cx="440.6" cy="232.5" r="6.2" fill="#4e7d2e" opacity="0.95"/><circle cx="531.7" cy="401.1" r="7.6" fill="#1c1c1c" opacity="0.95"/><circle cx="585.4" cy="271.2" r="13.7" fill="#e98a73" opacity="0.95"/><circle cx="529.0" cy="171.6" r="5.6" fill="#4e7d2e" opacity="0.95"/>
+  <text x="400" y="588" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="46" fill="#f5ecdd" font-style="italic">Frutti di Mare</text>
+  <text x="400" y="618" text-anchor="middle" font-family="Arial, sans-serif" font-size="15" letter-spacing="4" fill="#e8590c">LA BELLA · PIZZERIA</text>
+</svg>

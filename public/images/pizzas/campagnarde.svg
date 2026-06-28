@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 640" width="800" height="640" role="img" aria-label="Campagnarde">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="38%" r="75%">
+      <stop offset="0%" stop-color="#2a211c"/><stop offset="100%" stop-color="#0f0c0b"/>
+    </radialGradient>
+    <radialGradient id="crust" cx="50%" cy="45%" r="60%">
+      <stop offset="60%" stop-color="#e6b25a"/><stop offset="88%" stop-color="#cf8a32"/><stop offset="100%" stop-color="#9c5a1c"/>
+    </radialGradient>
+    <radialGradient id="sauce" cx="50%" cy="45%" r="60%">
+      <stop offset="0%" stop-color="#d6452b"/><stop offset="100%" stop-color="#a32c18"/>
+    </radialGradient>
+  </defs>
+  <rect width="800" height="640" fill="url(#bg)"/>
+  <circle cx="400" cy="290" r="236" fill="#000" opacity="0.35"/>
+  <circle cx="400" cy="290" r="230" fill="url(#crust)"/>
+  <circle cx="400" cy="290" r="204" fill="url(#sauce)"/>
+  <circle cx="228.1" cy="326.3" r="39.7" fill="#f4e3b8" opacity="0.55"/><circle cx="335.9" cy="263.2" r="24.1" fill="#f4e3b8" opacity="0.55"/><circle cx="494.1" cy="336.9" r="31.0" fill="#f4e3b8" opacity="0.55"/><circle cx="237.0" cy="386.3" r="25.6" fill="#f4e3b8" opacity="0.55"/><circle cx="468.6" cy="291.9" r="39.2" fill="#f4e3b8" opacity="0.55"/><circle cx="393.6" cy="419.6" r="36.8" fill="#f4e3b8" opacity="0.55"/><circle cx="300.1" cy="224.4" r="27.6" fill="#f4e3b8" opacity="0.55"/><circle cx="307.1" cy="337.6" r="20.8" fill="#f4e3b8" opacity="0.55"/><circle cx="471.7" cy="423.1" r="25.6" fill="#f4e3b8" opacity="0.55"/><circle cx="401.1" cy="456.4" r="29.1" fill="#f4e3b8" opacity="0.55"/>
+  <circle cx="349.3" cy="467.2" r="12.2" fill="#e8d6a0" opacity="0.95"/><circle cx="327.7" cy="404.5" r="12.8" fill="#c87b6a" opacity="0.95"/><circle cx="492.3" cy="269.9" r="13.4" fill="#e9dcc0" opacity="0.95"/><circle cx="295.1" cy="223.7" r="12.5" fill="#e8d6a0" opacity="0.95"/><circle cx="305.2" cy="191.5" r="12.2" fill="#c87b6a" opacity="0.95"/><circle cx="355.3" cy="290.7" r="13.1" fill="#e9dcc0" opacity="0.95"/><circle cx="354.3" cy="250.0" r="14.2" fill="#e8d6a0" opacity="0.95"/><circle cx="322.9" cy="349.3" r="11.4" fill="#c87b6a" opacity="0.95"/><circle cx="396.6" cy="356.7" r="11.3" fill="#e9dcc0" opacity="0.95"/><circle cx="266.0" cy="167.2" r="12.6" fill="#e8d6a0" opacity="0.95"/><circle cx="442.8" cy="255.7" r="11.8" fill="#c87b6a" opacity="0.95"/><circle cx="351.7" cy="290.6" r="9.4" fill="#e9dcc0" opacity="0.95"/><circle cx="444.3" cy="229.8" r="15.7" fill="#e8d6a0" opacity="0.95"/><circle cx="368.4" cy="324.3" r="9.5" fill="#c87b6a" opacity="0.95"/>
+  <text x="400" y="588" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="46" fill="#f5ecdd" font-style="italic">Campagnarde</text>
+  <text x="400" y="618" text-anchor="middle" font-family="Arial, sans-serif" font-size="15" letter-spacing="4" fill="#e8590c">LA BELLA · PIZZERIA</text>
+</svg>
