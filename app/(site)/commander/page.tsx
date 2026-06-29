@@ -7,6 +7,7 @@ import { SectionTitle } from "@/components/ui/SectionTitle";
 import { PizzaCard } from "@/components/PizzaCard";
 import { CTAButton } from "@/components/ui/CTAButton";
 import { CartSummary } from "@/components/cart/CartSummary";
+import { MobileCheckout } from "@/components/cart/MobileCheckout";
 
 export const metadata: Metadata = {
   title: "Commander en ligne",
@@ -64,8 +65,18 @@ export default async function CommanderPage({
         </div>
       )}
 
-      {/* Modes de commande */}
-      <section className="bg-paper py-14">
+      {/* --- Tunnel MOBILE en 3 étapes --- */}
+      <section className="bg-cream-100 py-8 lg:hidden">
+        <div className="container-page max-w-md md:max-w-lg">
+          <h2 className="mb-4 text-center font-display text-2xl font-bold uppercase text-charcoal-900">
+            Finaliser ma commande
+          </h2>
+          <MobileCheckout />
+        </div>
+      </section>
+
+      {/* Modes de commande (desktop) */}
+      <section className="hidden bg-paper py-8 sm:py-14 lg:block">
         <div className="container-page grid gap-5 sm:grid-cols-3">
           {modes.map((mode) => (
             <div
@@ -84,8 +95,8 @@ export default async function CommanderPage({
         </div>
       </section>
 
-      {/* Aperçu du menu */}
-      <section className="bg-cream-100 py-12 lg:py-16">
+      {/* Aperçu du menu (desktop) */}
+      <section className="hidden bg-cream-100 py-12 lg:block lg:py-16">
         <div className="container-page">
           <SectionTitle
             eyebrow="Composez votre commande"
@@ -112,7 +123,7 @@ export default async function CommanderPage({
       </section>
 
       {/* Commande par téléphone */}
-      <section className="bg-charcoal-900 py-14 text-center text-cream-50">
+      <section className="bg-charcoal-900 py-8 text-center text-cream-50 sm:py-14">
         <div className="container-page">
           <Phone className="mx-auto h-10 w-10 text-terracotta-400" aria-hidden />
           <h2 className="mt-4 font-display text-3xl font-bold uppercase">

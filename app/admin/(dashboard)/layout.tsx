@@ -5,8 +5,12 @@ import { redirect } from "next/navigation";
 import { ShieldAlert } from "lucide-react";
 import { getSession } from "@/lib/admin/auth";
 import { AdminShell } from "@/components/admin/AdminShell";
+import { ChatWidget } from "@/components/assistant/ChatWidget";
 import { notifications, orders, reviews, stockItems } from "@/data/admin/mock";
 import { canAccessPath } from "@/lib/admin/nav";
+
+/** Rôles autorisés à utiliser le copilote IA back-office. */
+const COPILOT_ROLES = ["SUPER_ADMIN", "MANAGER", "SUPPORT"];
 
 export const metadata: Metadata = {
   title: "Back-office · La Bella",
@@ -38,14 +42,27 @@ export default async function DashboardLayout({
   };
 
   return (
-    <AdminShell
-      name={session.name}
-      role={session.role}
-      notifications={notifications}
-      badges={badges}
-    >
-      {allowed ? children : <AccessDenied />}
-    </AdminShell>
+    <>
+      <AdminShell
+        name={session.name}
+        role={session.role}
+        notifications={notifications}
+        badges={badges}
+      >
+        {allowed ? children : <AccessDenied />}
+      </AdminShell>
+
+      {COPILOT_ROLES.includes(session.role) && (
+        <ChatWidget
+          endpoint="/api/admin/assistant"
+          title="Copilote"
+          subtitle="Assistant back-office"
+          launchLabel="Ouvrir le copilote"
+          greeting="Bonjour 👋 Je suis le copilote La Bella. Demandez-moi un résumé du jour, une commande, un client, ou un brouillon de réponse à un avis."
+          suggestions={["Résume la journée", "Commandes en préparation ?", "Avis en attente"]}
+        />
+      )}
+    </>
   );
 }
 

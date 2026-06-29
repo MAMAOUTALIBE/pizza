@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 import { redirect } from "next/navigation";
 import { Leaf } from "lucide-react";
-import { getSession } from "@/lib/admin/auth";
+import { getSession, isDemoVisible } from "@/lib/admin/auth";
 import { LoginForm } from "@/components/admin/LoginForm";
 
 export const metadata: Metadata = {
@@ -28,7 +28,7 @@ export default async function AdminLoginPage() {
       </div>
 
       <Suspense fallback={<div className="text-cream-200/50">Chargement…</div>}>
-        <LoginForm />
+        <LoginForm demoVisible={isDemoVisible()} />
       </Suspense>
 
       <p className="mt-8 text-xs text-cream-200/40">

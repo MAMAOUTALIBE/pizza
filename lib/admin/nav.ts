@@ -13,6 +13,7 @@ import {
   Users,
   Star,
   Gift,
+  Ticket,
   Megaphone,
   Globe,
   Image as ImageIcon,
@@ -77,6 +78,7 @@ export const navGroups: NavGroup[] = [
     items: [
       { label: "Clients", href: "/admin/clients", icon: Users, roles: ["SUPER_ADMIN", "MANAGER", "SUPPORT"] },
       { label: "Avis", href: "/admin/avis", icon: Star, badgeKey: "pendingReviews", roles: ["SUPER_ADMIN", "MANAGER", "SUPPORT"] },
+      { label: "Promotions", href: "/admin/promotions", icon: Ticket, roles: ["SUPER_ADMIN", "MANAGER"] },
       { label: "Fidélité", href: "/admin/fidelite", icon: Gift, roles: ["SUPER_ADMIN", "MANAGER"] },
       { label: "Marketing", href: "/admin/marketing", icon: Megaphone, roles: ["SUPER_ADMIN", "MANAGER"] },
     ],

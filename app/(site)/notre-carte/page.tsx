@@ -7,6 +7,7 @@ import { SectionTitle } from "@/components/ui/SectionTitle";
 import { PizzaCard } from "@/components/PizzaCard";
 import { MenuListItem } from "@/components/MenuListItem";
 import { MenuHighlightCard } from "@/components/MenuHighlightCard";
+import { CarteTabs } from "@/components/CarteTabs";
 
 export const metadata: Metadata = {
   title: "Notre carte",
@@ -34,6 +35,11 @@ export default function NotreCartePage() {
         image="/images/pizzeria/07_ingredients_pate_maison.png"
       />
 
+      {/* Mobile : carte en onglets de catégories (une vue) */}
+      <CarteTabs />
+
+      {/* Desktop : page complète par sections */}
+      <div className="hidden lg:block">
       {/* Navigation par catégories (collante) */}
       <nav
         aria-label="Catégories de la carte"
@@ -53,10 +59,10 @@ export default function NotreCartePage() {
       </nav>
 
       {/* Pizzas */}
-      <section id="pizzas" className="scroll-mt-36 bg-paper py-16 lg:py-20">
+      <section id="pizzas" className="scroll-mt-36 bg-paper py-8 lg:py-20">
         <div className="container-page">
           <SectionTitle eyebrow="Les incontournables" title="Pizzas" />
-          <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
             {pizzas.map((pizza) => (
               <PizzaCard key={pizza.id} pizza={pizza} />
             ))}
@@ -65,10 +71,10 @@ export default function NotreCartePage() {
       </section>
 
       {/* Menus */}
-      <section id="menus" className="scroll-mt-36 bg-cream-100 py-16 lg:py-20">
+      <section id="menus" className="scroll-mt-36 bg-cream-100 py-8 lg:py-20">
         <div className="container-page">
           <SectionTitle eyebrow="Nos formules" title="Menus" />
-          <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
             {formulas.map((formula) => (
               <MenuHighlightCard key={formula.id} formula={formula} />
             ))}
@@ -77,7 +83,7 @@ export default function NotreCartePage() {
       </section>
 
       {/* Accompagnements + Desserts + Boissons */}
-      <section className="bg-paper py-16 lg:py-20">
+      <section className="bg-paper py-8 lg:py-20">
         <div className="container-page grid gap-12 lg:grid-cols-2">
           <div id="accompagnements" className="scroll-mt-36">
             <SectionTitle
@@ -113,6 +119,7 @@ export default function NotreCartePage() {
           </div>
         </div>
       </section>
+      </div>
     </>
   );
 }

@@ -9,17 +9,20 @@
  * utilise lib/admin/auth.ts (comptes démo), indépendant de ce champ.
  */
 import { PrismaClient, type Prisma } from "@prisma/client";
+import bcrypt from "bcryptjs";
 
 const prisma = new PrismaClient();
 
-const PLACEHOLDER_HASH = "REPLACE_WITH_BCRYPT_HASH";
+// Mot de passe initial des comptes (À CHANGER après le premier login).
+const SEED_PASSWORD = process.env.SEED_ADMIN_PASSWORD || "LaBella!2026";
+const passwordHash = bcrypt.hashSync(SEED_PASSWORD, 10);
 
 const users: Prisma.UserCreateInput[] = [
-  { name: "Giovanni Bianchi", email: "superadmin@labella.fr", role: "SUPER_ADMIN", passwordHash: PLACEHOLDER_HASH },
-  { name: "Sofia Marchetti", email: "manager@labella.fr", role: "MANAGER", passwordHash: PLACEHOLDER_HASH },
-  { name: "Karim Benali", email: "cuisine@labella.fr", role: "KITCHEN", passwordHash: PLACEHOLDER_HASH },
-  { name: "Lucas Petit", email: "livreur@labella.fr", role: "DRIVER", passwordHash: PLACEHOLDER_HASH },
-  { name: "Emma Laurent", email: "support@labella.fr", role: "SUPPORT", passwordHash: PLACEHOLDER_HASH },
+  { name: "Giovanni Bianchi", email: "superadmin@labella.fr", role: "SUPER_ADMIN", passwordHash },
+  { name: "Sofia Marchetti", email: "manager@labella.fr", role: "MANAGER", passwordHash },
+  { name: "Karim Benali", email: "cuisine@labella.fr", role: "KITCHEN", passwordHash },
+  { name: "Lucas Petit", email: "livreur@labella.fr", role: "DRIVER", passwordHash },
+  { name: "Emma Laurent", email: "support@labella.fr", role: "SUPPORT", passwordHash },
 ];
 
 const categories: Prisma.CategoryCreateInput[] = [
@@ -233,6 +236,7 @@ async function main() {
   }
 
   console.log("✅ Seed terminé : 40 clients, ~100 commandes, 12 réservations, 6 avis.");
+  console.log(`🔑 Comptes admin créés. Mot de passe initial : "${SEED_PASSWORD}" — À CHANGER.`);
 }
 
 main()

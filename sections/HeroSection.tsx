@@ -1,12 +1,13 @@
 import Image from "next/image";
+import Link from "next/link";
 import { Flame, Leaf, Truck, Pizza as PizzaIcon, UtensilsCrossed } from "lucide-react";
 import { CTAButton } from "@/components/ui/CTAButton";
 import { FeatureItem } from "@/components/FeatureItem";
 
 const features = [
-  { icon: Leaf, title: "Ingrédients frais", description: "Sélectionnés chaque jour" },
-  { icon: Flame, title: "Cuisson feu de bois", description: "Goût authentique" },
-  { icon: Truck, title: "Livraison rapide", description: "À domicile / au bureau" },
+  { icon: Leaf, title: "Ingrédients frais", description: "Sélectionnés chaque jour", href: "/a-propos" },
+  { icon: Flame, title: "Cuisson feu de bois", description: "Goût authentique", href: "/a-propos" },
+  { icon: Truck, title: "Livraison rapide", description: "À domicile / au bureau", href: "/commander" },
 ];
 
 /** Hero d'accueil : visuel fort, titre script + condensé, double CTA, réassurance. */
@@ -24,15 +25,15 @@ export function HeroSection() {
       />
       <div className="absolute inset-0 bg-hero-fade" aria-hidden />
 
-      {/* --- Hero MOBILE (app-like, court et visuel) --- */}
-      <div className="container-page relative flex flex-col items-center pb-12 pt-28 text-center lg:hidden">
-        <div className="relative h-56 w-56 animate-fade-up">
+      {/* --- Hero MOBILE + TABLETTE (app-like, court et visuel) --- */}
+      <div className="container-page relative flex flex-col items-center pb-8 pt-24 text-center md:pb-12 md:pt-28 lg:hidden">
+        <div className="relative h-56 w-56 animate-fade-up md:h-72 md:w-72">
           <Image
             src="/images/pizzeria/02_pizza_margherita.png"
             alt="Pizza artisanale La Bella"
             fill
             priority
-            sizes="224px"
+            sizes="(min-width: 768px) 288px, 224px"
             className="rounded-full object-cover shadow-2xl"
           />
           <span className="absolute -bottom-1 -right-1 flex h-16 w-16 flex-col items-center justify-center rounded-full border border-cream-50/30 bg-charcoal-950/85 text-center backdrop-blur">
@@ -41,12 +42,12 @@ export function HeroSection() {
           </span>
         </div>
 
-        <h1 className="mt-6 font-display text-4xl font-bold uppercase leading-[0.95] text-cream-50 sm:text-5xl">
+        <h1 className="mt-6 font-display text-4xl font-bold uppercase leading-[0.95] text-cream-50 sm:text-5xl md:mt-8 md:text-6xl">
           Pizza <span className="text-gradient-warm">artisanale</span>
         </h1>
-        <p className="mt-2 text-base text-cream-200/85">Chaude, fraîche, prête à commander.</p>
+        <p className="mt-2 text-base text-cream-200/85 md:text-lg">Chaude, fraîche, prête à commander.</p>
 
-        <div className="mt-6 flex w-full max-w-xs flex-col gap-3">
+        <div className="mt-6 flex w-full max-w-xs flex-col gap-3 md:mt-8 md:max-w-sm">
           <CTAButton href="/commander" size="lg" className="w-full">
             <PizzaIcon className="h-5 w-5" aria-hidden />
             Commander
@@ -57,9 +58,21 @@ export function HeroSection() {
           </CTAButton>
         </div>
 
-        <div className="mt-8 grid w-full max-w-sm grid-cols-3 gap-2">
+        {/* Réassurance — boutons premium « glass » tappables */}
+        <div className="mt-8 grid w-full max-w-sm grid-cols-3 gap-2.5 md:max-w-md md:gap-3">
           {features.map((f) => (
-            <FeatureItem key={f.title} icon={f.icon} title={f.title} />
+            <Link
+              key={f.title}
+              href={f.href}
+              className="group flex flex-col items-center gap-2 rounded-2xl border border-white/10 bg-white/[0.06] px-2 py-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] backdrop-blur-md transition-all duration-200 hover:border-terracotta-500/40 hover:bg-white/[0.1] active:scale-95"
+            >
+              <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-terracotta-400 to-tomato-600 text-white shadow-glow transition-transform duration-200 group-hover:scale-105">
+                <f.icon className="h-5 w-5" aria-hidden />
+              </span>
+              <span className="text-center text-[0.62rem] font-bold uppercase leading-tight tracking-wide text-cream-50 md:text-xs">
+                {f.title}
+              </span>
+            </Link>
           ))}
         </div>
       </div>
@@ -71,7 +84,7 @@ export function HeroSection() {
           <p className="font-script text-3xl text-cream-50 sm:text-4xl">
             Le goût
           </p>
-          <h1 className="mt-1 font-display text-5xl font-bold uppercase leading-[0.95] sm:text-6xl lg:text-7xl">
+          <h1 className="mt-1 font-display text-5xl font-bold uppercase leading-[0.95] sm:text-6xl lg:text-7xl 2xl:text-8xl">
             <span className="text-gradient-warm">De l&apos;Italie</span>
           </h1>
           <p className="mt-5 max-w-md text-base text-cream-200/85 sm:text-lg">
@@ -103,7 +116,7 @@ export function HeroSection() {
         </div>
 
         {/* Visuel pizza + tampon */}
-        <div className="relative mx-auto hidden aspect-square w-full max-w-lg lg:block">
+        <div className="relative mx-auto hidden aspect-square w-full max-w-lg lg:block 2xl:max-w-xl">
           <div className="absolute inset-0 animate-float">
             <Image
               src="/images/pizzeria/02_pizza_margherita.png"

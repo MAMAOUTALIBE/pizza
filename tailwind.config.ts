@@ -89,6 +89,8 @@ const config: Config = {
       },
       animation: {
         "fade-up": "fade-up 0.7s cubic-bezier(0.16, 1, 0.3, 1) both",
+        // Transition courte pour le changement d'onglet / d'étape (mobile)
+        "fade-up-sm": "fade-up 0.32s cubic-bezier(0.16, 1, 0.3, 1) both",
         "fade-in": "fade-in 0.8s ease-out both",
         float: "float 6s ease-in-out infinite",
       },

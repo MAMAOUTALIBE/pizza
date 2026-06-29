@@ -3,6 +3,7 @@ import { Footer } from "@/components/Footer";
 import { BottomNav } from "@/components/BottomNav";
 import { CartProvider } from "@/components/cart/CartProvider";
 import { CartDrawer } from "@/components/cart/CartDrawer";
+import { ChatWidget } from "@/components/assistant/ChatWidget";
 
 /**
  * Layout du site public : header fixe + contenu + footer.
@@ -25,6 +26,7 @@ export default function SiteLayout({
 
       <CartDrawer />
       <BottomNav />
+      <ChatWidget />
     </CartProvider>
   );
 }

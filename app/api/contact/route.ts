@@ -1,5 +1,6 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
+import { rateLimit, clientIp } from "@/lib/rate-limit";
 
 const MAX_FIELD_LENGTH = 200;
 const MAX_MESSAGE_LENGTH = 3000;
@@ -9,6 +10,15 @@ const MAX_MESSAGE_LENGTH = 3000;
  * Valide les champs et (en prod) envoie un email via Resend/SMTP.
  */
 export async function POST(request: NextRequest) {
+  // Anti-spam : limite les envois par IP.
+  const limit = rateLimit(`contact:${clientIp(request)}`, 5, 60_000);
+  if (!limit.ok) {
+    return NextResponse.json(
+      { error: "Trop de messages. Réessayez dans un instant." },
+      { status: 429, headers: { "Retry-After": String(limit.retryAfter) } },
+    );
+  }
+
   const body = await request.json().catch(() => null);
   const name = cleanField(body?.name);
   const email = cleanField(body?.email).toLowerCase();

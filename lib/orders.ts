@@ -89,6 +89,57 @@ export function generateOrderNumber(date = new Date()): string {
   return `WEB-${day}-${suffix}`;
 }
 
+export interface PricedCart {
+  items: ValidatedItem[];
+  subtotal: number;
+  deliveryFee: number;
+  total: number;
+}
+export type PriceResult = { ok: true; cart: PricedCart } | { ok: false; error: string };
+
+/**
+ * Valide les articles d'un panier contre le catalogue serveur et calcule les
+ * totaux (prix INFALSIFIABLES). Indépendant des informations client : sert à
+ * chiffrer un panier (assistant IA) comme à finaliser une commande (buildOrder).
+ */
+export function priceCart(rawItems: unknown, channel: OrderChannel): PriceResult {
+  if (!ORDER_CHANNELS.includes(channel)) return { ok: false, error: "Mode de commande invalide." };
+  if (!Array.isArray(rawItems) || rawItems.length === 0) return { ok: false, error: "Panier vide." };
+
+  const catalog = new Map(pizzas.map((pizza) => [pizza.id, pizza]));
+  const items = rawItems
+    .map((item): ValidatedItem | null => {
+      if (!item || typeof item !== "object") return null;
+      const raw = item as { id?: unknown; quantity?: unknown; options?: unknown };
+      const pizza = typeof raw.id === "string" ? catalog.get(raw.id) : undefined;
+      const quantity = Number(raw.quantity);
+      if (!pizza || !Number.isInteger(quantity) || quantity < 1 || quantity > MAX_ITEM_QTY) {
+        return null;
+      }
+      // Options : on ne garde que celles du catalogue serveur (prix recalculé).
+      const labels = Array.isArray(raw.options)
+        ? raw.options
+            .map((o) => (o && typeof o === "object" ? (o as { label?: unknown }).label : null))
+            .filter((l): l is string => typeof l === "string" && OPTION_DELTAS.has(l))
+        : [];
+      const optionsDelta = labels.reduce((s, l) => s + (OPTION_DELTAS.get(l) ?? 0), 0);
+      const unitPrice = Math.max(0, round2(pizza.price + optionsDelta));
+      const name = labels.length ? `${pizza.name} (${labels.join(", ")})` : pizza.name;
+      return { id: pizza.id, name, quantity, unitPrice, total: round2(unitPrice * quantity) };
+    })
+    .filter((item): item is ValidatedItem => item !== null);
+
+  if (items.length === 0) return { ok: false, error: "Articles invalides." };
+
+  const subtotal = round2(items.reduce((sum, item) => sum + item.total, 0));
+  if (channel === "DELIVERY" && subtotal < DELIVERY_MINIMUM) {
+    return { ok: false, error: "Minimum livraison : 15,00 €." };
+  }
+  const deliveryFee = channel === "DELIVERY" ? DELIVERY_FEE : 0;
+  const total = round2(subtotal + deliveryFee);
+  return { ok: true, cart: { items, subtotal, deliveryFee, total } };
+}
+
 /**
  * Valide un payload de commande (channel + client + items) et reconstruit
  * une commande fiable avec prix serveur. Ne dépend d'aucune donnée de prix client.
@@ -123,50 +174,9 @@ export function buildOrder(body: unknown): BuildResult {
     return { ok: false, error: "Adresse de livraison obligatoire." };
   }
 
-  if (!Array.isArray(payload.items) || payload.items.length === 0) {
-    return { ok: false, error: "Panier vide." };
-  }
-
-  const catalog = new Map(pizzas.map((pizza) => [pizza.id, pizza]));
-  const items = payload.items
-    .map((item): ValidatedItem | null => {
-      if (!item || typeof item !== "object") return null;
-      const raw = item as { id?: unknown; quantity?: unknown; options?: unknown };
-      const pizza = typeof raw.id === "string" ? catalog.get(raw.id) : undefined;
-      const quantity = Number(raw.quantity);
-      if (!pizza || !Number.isInteger(quantity) || quantity < 1 || quantity > MAX_ITEM_QTY) {
-        return null;
-      }
-      // Options : on ne garde que celles du catalogue serveur (prix recalculé).
-      const labels = Array.isArray(raw.options)
-        ? raw.options
-            .map((o) => (o && typeof o === "object" ? (o as { label?: unknown }).label : null))
-            .filter((l): l is string => typeof l === "string" && OPTION_DELTAS.has(l))
-        : [];
-      const optionsDelta = labels.reduce((s, l) => s + (OPTION_DELTAS.get(l) ?? 0), 0);
-      const unitPrice = Math.max(0, round2(pizza.price + optionsDelta));
-      const name = labels.length ? `${pizza.name} (${labels.join(", ")})` : pizza.name;
-      return {
-        id: pizza.id,
-        name,
-        quantity,
-        unitPrice,
-        total: round2(unitPrice * quantity),
-      };
-    })
-    .filter((item): item is ValidatedItem => item !== null);
-
-  if (items.length === 0) {
-    return { ok: false, error: "Articles invalides." };
-  }
-
-  const subtotal = round2(items.reduce((sum, item) => sum + item.total, 0));
-  if (channel === "DELIVERY" && subtotal < DELIVERY_MINIMUM) {
-    return { ok: false, error: "Minimum livraison : 15,00 €." };
-  }
-
-  const deliveryFee = channel === "DELIVERY" ? DELIVERY_FEE : 0;
-  const total = round2(subtotal + deliveryFee);
+  const priced = priceCart(payload.items, channel);
+  if (!priced.ok) return { ok: false, error: priced.error };
+  const { items, subtotal, deliveryFee, total } = priced.cart;
 
   return {
     ok: true,

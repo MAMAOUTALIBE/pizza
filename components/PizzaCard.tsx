@@ -9,14 +9,21 @@ import { AddToCartButton } from "@/components/cart/AddToCartButton";
  * Carte produit pizza : image cliquable (→ détail), nom, description, prix et
  * bouton d'ajout rapide. Compacte sur mobile (grille 2 colonnes).
  */
+// `sizes` par défaut aligné sur les grilles réelles :
+// 2 col (<768) · 3 col (768–1279) · 4 col (1280–1535) · 5 col (>=1536).
+const GRID_SIZES =
+  "(max-width: 767px) 50vw, (max-width: 1279px) 33vw, (max-width: 1535px) 25vw, 20vw";
+
 export function PizzaCard({
   pizza,
   showTags = false,
   className,
+  sizes = GRID_SIZES,
 }: {
   pizza: Pizza;
   showTags?: boolean;
   className?: string;
+  sizes?: string;
 }) {
   const href = `/nos-pizzas/${pizza.slug}`;
 
@@ -32,7 +39,7 @@ export function PizzaCard({
           src={pizza.image}
           alt={`Pizza ${pizza.name}`}
           fill
-          sizes="(max-width: 640px) 50vw, (max-width: 1024px) 50vw, 25vw"
+          sizes={sizes}
           className="object-cover transition-transform duration-500 group-hover:scale-105"
         />
         {pizza.badge && (

@@ -11,7 +11,7 @@ import { Reveal } from "@/components/ui/Reveal";
  */
 export function PromoSection() {
   return (
-    <section className="bg-cream-100 py-20 lg:py-24">
+    <section className="bg-cream-100 py-10 lg:py-24">
       <div className="container-page grid gap-6 lg:grid-cols-2">
         {/* Carte Nos menus */}
         <Reveal className="relative flex flex-col justify-between overflow-hidden rounded-3xl bg-charcoal-900 p-8 text-cream-50 shadow-card">

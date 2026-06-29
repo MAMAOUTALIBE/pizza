@@ -37,7 +37,7 @@ export function Footer() {
       </div>
 
       {/* --- Footer COMPLET (desktop) --- */}
-      <div className="container-page relative hidden gap-10 py-14 sm:grid-cols-2 lg:grid lg:grid-cols-4">
+      <div className="container-page relative hidden gap-10 py-14 lg:grid lg:grid-cols-4">
         {/* Marque */}
         <div className="space-y-4">
           <Logo tone="dark" />
@@ -110,7 +110,7 @@ export function Footer() {
 
       {/* Bas de footer */}
       <div className="border-t border-cream-50/10">
-        <div className="container-page flex flex-col items-center justify-between gap-3 py-5 text-xs text-cream-200/60 sm:flex-row">
+        <div className="container-page flex flex-col items-center justify-between gap-2 py-3 text-xs text-cream-200/60 sm:flex-row sm:py-5">
           <p>
             © {new Date().getFullYear()} {site.fullName} — Tous droits réservés
           </p>

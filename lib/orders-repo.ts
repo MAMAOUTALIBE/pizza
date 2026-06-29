@@ -109,6 +109,59 @@ export async function setOrderStatus(
   }
 }
 
+export interface OrderTracking {
+  found: boolean;
+  demo?: boolean;
+  mismatch?: boolean;
+  number?: string;
+  status?: string;
+  channel?: string;
+  total?: number;
+  createdAt?: string;
+}
+
+const digitsOnly = (s: string) => s.replace(/\D/g, "");
+
+/**
+ * Suivi public d'une commande par numéro — CONFIDENTIALITÉ : le statut n'est
+ * renvoyé que si le téléphone fourni correspond à celui de la commande (anti
+ * énumération). Sans persistance (démo), renvoie { demo: true }.
+ */
+export async function getOrderTracking(
+  orderNumber: string,
+  phone: string,
+): Promise<OrderTracking> {
+  if (!isPersistenceEnabled()) return { found: false, demo: true };
+  try {
+    const order = await getPrisma().order.findUnique({
+      where: { number: orderNumber.trim() },
+      select: {
+        number: true,
+        status: true,
+        channel: true,
+        total: true,
+        customerPhone: true,
+        createdAt: true,
+      },
+    });
+    if (!order) return { found: false };
+    if (!digitsOnly(phone) || digitsOnly(order.customerPhone) !== digitsOnly(phone)) {
+      return { found: false, mismatch: true };
+    }
+    return {
+      found: true,
+      number: order.number,
+      status: order.status,
+      channel: order.channel,
+      total: Number(order.total),
+      createdAt: order.createdAt.toISOString(),
+    };
+  } catch (error) {
+    console.error("Suivi de commande échoué", orderNumber, error);
+    return { found: false };
+  }
+}
+
 /**
  * Enregistre l'id d'un événement webhook pour garantir l'idempotence.
  * Renvoie `true` s'il faut traiter l'événement (première fois), `false` si déjà vu.

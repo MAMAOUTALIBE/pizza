@@ -28,7 +28,7 @@ function SubmitButton() {
   );
 }
 
-export function LoginForm() {
+export function LoginForm({ demoVisible = false }: { demoVisible?: boolean }) {
   const searchParams = useSearchParams();
   const from = searchParams.get("from") ?? "/admin";
   const [state, formAction] = useActionState(loginAction, undefined);
@@ -51,7 +51,7 @@ export function LoginForm() {
             type="email"
             required
             autoComplete="username"
-            defaultValue="superadmin@labella.fr"
+            defaultValue={demoVisible ? "superadmin@labella.fr" : undefined}
             className="w-full rounded-xl border border-white/10 bg-charcoal-950 px-4 py-3 text-sm text-cream-50 placeholder:text-cream-200/30 focus:border-terracotta-500 focus:outline-none focus:ring-2 focus:ring-terracotta-500/30"
             placeholder="vous@labella.fr"
           />
@@ -67,7 +67,7 @@ export function LoginForm() {
             type="password"
             required
             autoComplete="current-password"
-            defaultValue="demo"
+            defaultValue={demoVisible ? "demo" : undefined}
             className="w-full rounded-xl border border-white/10 bg-charcoal-950 px-4 py-3 text-sm text-cream-50 placeholder:text-cream-200/30 focus:border-terracotta-500 focus:outline-none focus:ring-2 focus:ring-terracotta-500/30"
             placeholder="••••••••"
           />
@@ -84,7 +84,8 @@ export function LoginForm() {
         </div>
       </form>
 
-      {/* Comptes de démonstration */}
+      {/* Comptes de démonstration — masqués en production */}
+      {demoVisible && (
       <div className="mt-6 rounded-2xl border border-white/5 bg-charcoal-900/40 p-5">
         <p className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-terracotta-400">
           <ShieldCheck className="h-4 w-4" aria-hidden />
@@ -102,6 +103,7 @@ export function LoginForm() {
           ))}
         </ul>
       </div>
+      )}
     </div>
   );
 }

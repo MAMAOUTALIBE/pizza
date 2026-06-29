@@ -50,9 +50,11 @@
 }
 
 @layer components {
-  /* Conteneur de contenu standard du site */
+  /* Conteneur de contenu standard du site.
+     S'élargit sur très grands écrans (2xl) pour exploiter l'espace sans
+     aller bord à bord. */
   .container-page {
-    @apply mx-auto w-full max-w-7xl px-5 sm:px-8 lg:px-10;
+    @apply mx-auto w-full max-w-7xl px-5 sm:px-8 lg:px-10 2xl:max-w-[88rem];
   }
 
   /* Sur-titre rouge en petites capitales (cf. « DÉCOUVREZ », « NOTRE ENGAGEMENT ») */

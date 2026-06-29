@@ -21,6 +21,7 @@ const roleRules: Array<{ href: string; roles?: AdminRole[] }> = [
   { href: "/admin/stocks", roles: ["SUPER_ADMIN", "MANAGER", "KITCHEN"] },
   { href: "/admin/clients", roles: ["SUPER_ADMIN", "MANAGER", "SUPPORT"] },
   { href: "/admin/avis", roles: ["SUPER_ADMIN", "MANAGER", "SUPPORT"] },
+  { href: "/admin/promotions", roles: ["SUPER_ADMIN", "MANAGER"] },
   { href: "/admin/fidelite", roles: ["SUPER_ADMIN", "MANAGER"] },
   { href: "/admin/marketing", roles: ["SUPER_ADMIN", "MANAGER"] },
   { href: "/admin/site", roles: ["SUPER_ADMIN", "MANAGER"] },
@@ -73,8 +74,22 @@ export const config = {
   matcher: ["/admin/:path*"],
 };
 
-function secret() {
-  return process.env.AUTH_SECRET || "dev-only-insecure-secret";
+const WEAK_SECRETS = new Set([
+  "change-me-in-production",
+  "dev-only-secret-change-me",
+  "dev-only-insecure-secret",
+]);
+
+// FAIL-CLOSED en production : pas de fallback forgeable (cf. lib/admin/auth.ts).
+function secret(): string {
+  const s = process.env.AUTH_SECRET ?? "";
+  if (process.env.NODE_ENV === "production") {
+    if (s.length < 32 || WEAK_SECRETS.has(s)) {
+      throw new Error("AUTH_SECRET invalide en production (openssl rand -base64 32).");
+    }
+    return s;
+  }
+  return s || "dev-insecure-secret-development-only";
 }
 
 async function verifySessionToken(token: string | undefined): Promise<MiddlewareSession | null> {

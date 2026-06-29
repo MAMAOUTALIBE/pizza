@@ -10,9 +10,14 @@ export default function HomePage() {
     <>
       <HeroSection />
       <PizzasSection />
-      <QualitySection />
+      {/* Sections « storytelling » réservées au desktop pour garder le mobile compact */}
+      <div className="hidden lg:block">
+        <QualitySection />
+      </div>
       <PromoSection />
-      <TestimonialsSection />
+      <div className="hidden lg:block">
+        <TestimonialsSection />
+      </div>
     </>
   );
 }

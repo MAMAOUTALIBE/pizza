@@ -18,9 +18,9 @@ export async function loginAction(
   const password = String(formData.get("password") ?? "");
   const from = String(formData.get("from") ?? "/admin");
 
-  const session = authenticate(email, password);
+  const session = await authenticate(email, password);
   if (!session) {
-    return { error: "Identifiants invalides. Essayez un compte de démonstration." };
+    return { error: "Identifiants invalides." };
   }
 
   (await cookies()).set(SESSION_COOKIE, createSessionToken(session), cookieOptions);

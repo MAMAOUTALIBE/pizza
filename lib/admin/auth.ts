@@ -1,20 +1,30 @@
 import { cookies } from "next/headers";
 import crypto from "node:crypto";
+import bcrypt from "bcryptjs";
 import type { UserRole } from "@/lib/admin/types";
 import { SESSION_COOKIE } from "@/lib/admin/constants";
+import { getPrisma, isPersistenceEnabled } from "@/lib/db";
 
 export { SESSION_COOKIE };
 
 /**
  * Authentification du back-office.
  *
- * Implémentation : session signée (HMAC-SHA256) stockée dans un cookie httpOnly.
- * Les comptes de démonstration sont en dur et documentés. En production :
- * remplacer DEMO_ACCOUNTS par une vérification Prisma + bcrypt, et garder le
- * reste (signature, cookie, getSession) tel quel.
+ * Session signée (HMAC-SHA256) en cookie httpOnly. Deux sources d'identité :
+ * 1) Utilisateurs réels en base (Prisma) vérifiés par bcrypt — quand la
+ *    persistance est active (production).
+ * 2) Comptes de démonstration — UNIQUEMENT hors production (ou opt-in explicite
+ *    ALLOW_DEMO_LOGIN), jamais exposés sur un site live.
  */
 
 const MAX_AGE = 60 * 60 * 8; // 8 heures
+
+/** Secrets faibles/exemples interdits en production. */
+const WEAK_SECRETS = new Set([
+  "change-me-in-production",
+  "dev-only-secret-change-me",
+  "dev-only-insecure-secret",
+]);
 
 export interface Session {
   userId: string;
@@ -32,8 +42,22 @@ export const DEMO_ACCOUNTS: Array<Session & { password: string }> = [
   { userId: "u5", name: "Emma Laurent", email: "support@labella.fr", role: "SUPPORT", password: "demo" },
 ];
 
-function secret() {
-  return process.env.AUTH_SECRET || "dev-only-insecure-secret";
+/**
+ * Secret de signature des sessions. FAIL-CLOSED en production : si AUTH_SECRET
+ * est absent, trop court ou connu/faible, on lève une erreur (pas de fallback
+ * forgeable). En dev, on tolère un secret de développement.
+ */
+function secret(): string {
+  const s = process.env.AUTH_SECRET ?? "";
+  if (process.env.NODE_ENV === "production") {
+    if (s.length < 32 || WEAK_SECRETS.has(s)) {
+      throw new Error(
+        "AUTH_SECRET invalide en production : fournissez un secret fort et unique (openssl rand -base64 32).",
+      );
+    }
+    return s;
+  }
+  return s || "dev-insecure-secret-development-only";
 }
 
 const b64url = (buf: Buffer | string) =>
@@ -70,13 +94,43 @@ export async function getSession(): Promise<Session | null> {
   return verifySessionToken(token);
 }
 
-/** Vérifie une combinaison email / mot de passe contre les comptes démo. */
-export function authenticate(email: string, password: string): Session | null {
-  const acc = DEMO_ACCOUNTS.find(
-    (a) => a.email.toLowerCase() === email.trim().toLowerCase() && a.password === password,
-  );
-  if (!acc) return null;
-  return { userId: acc.userId, name: acc.name, email: acc.email, role: acc.role };
+/** Les comptes de démo sont-ils autorisés ? (jamais en prod sauf opt-in explicite). */
+function demoLoginAllowed(): boolean {
+  return process.env.NODE_ENV !== "production" || process.env.ALLOW_DEMO_LOGIN === "true";
+}
+
+/**
+ * Vérifie email / mot de passe.
+ * 1) Utilisateur réel en base (bcrypt) si la persistance est active.
+ * 2) Sinon (ou en repli), comptes de démo — uniquement si autorisés.
+ */
+export async function authenticate(email: string, password: string): Promise<Session | null> {
+  const normalized = email.trim().toLowerCase();
+
+  // 1) Vrais utilisateurs en base
+  if (isPersistenceEnabled()) {
+    try {
+      const user = await getPrisma().user.findUnique({ where: { email: normalized } });
+      if (user && user.active && user.passwordHash && (await bcrypt.compare(password, user.passwordHash))) {
+        return { userId: user.id, name: user.name, email: user.email, role: user.role };
+      }
+    } catch (error) {
+      console.error("Vérification utilisateur en base échouée", error);
+    }
+  }
+
+  // 2) Comptes de démonstration (hors prod / opt-in)
+  if (demoLoginAllowed()) {
+    const acc = DEMO_ACCOUNTS.find((a) => a.email.toLowerCase() === normalized && a.password === password);
+    if (acc) return { userId: acc.userId, name: acc.name, email: acc.email, role: acc.role };
+  }
+
+  return null;
+}
+
+/** Les comptes de démo peuvent-ils être affichés/pré-remplis sur le login ? */
+export function isDemoVisible(): boolean {
+  return demoLoginAllowed();
 }
 
 export const cookieOptions = {

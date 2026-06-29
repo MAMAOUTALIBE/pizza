@@ -5,6 +5,7 @@ import { SectionTitle } from "@/components/ui/SectionTitle";
 import { MenuHighlightCard } from "@/components/MenuHighlightCard";
 import { Reveal } from "@/components/ui/Reveal";
 import { DeliveryBanner } from "@/components/DeliveryBanner";
+import { MenuSlider } from "@/components/MenuSlider";
 
 export const metadata: Metadata = {
   title: "Nos menus",
@@ -23,7 +24,11 @@ export default function MenusPage() {
         image="/images/pizzeria/06_menu_pizza_boisson_salade.png"
       />
 
-      <section className="bg-paper py-16 lg:py-20">
+      {/* Mobile : slider plein écran (une formule par vue) */}
+      <MenuSlider />
+
+      {/* Tablette + desktop : grille complète */}
+      <section className="hidden bg-paper py-8 md:block md:py-12 lg:py-20">
         <div className="container-page">
           <SectionTitle
             eyebrow="Composez votre repas"
@@ -31,7 +36,7 @@ export default function MenusPage() {
             subtitle="Chaque menu peut être personnalisé. Pizzas au choix dans toute notre carte."
           />
 
-          <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
             {formulas.map((formula, i) => (
               <Reveal key={formula.id} delay={i * 60}>
                 <MenuHighlightCard formula={formula} />
@@ -42,7 +47,7 @@ export default function MenusPage() {
       </section>
 
       {/* Bannière livraison */}
-      <section className="bg-cream-100 pb-20">
+      <section className="bg-cream-100 pb-10 lg:pb-20">
         <div className="container-page">
           <DeliveryBanner className="min-h-[16rem]" />
         </div>

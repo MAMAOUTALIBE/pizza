@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 import { getSession } from "@/lib/admin/auth";
 import { isPersistenceEnabled } from "@/lib/db";
 import { setOrderStatus } from "@/lib/orders-repo";
-import type { OrderStatus } from "@/lib/admin/types";
+import type { OrderStatus, UserRole } from "@/lib/admin/types";
 
 /**
  * Met à jour le statut d'une commande depuis le détail.
@@ -18,6 +18,9 @@ export async function updateOrderStatus(
 ): Promise<{ ok: boolean; demo?: boolean; error?: string }> {
   const session = await getSession();
   if (!session) return { ok: false, error: "Non authentifié." };
+  // Contrôle de rôle : seuls ces rôles peuvent changer un statut de commande.
+  const allowed: UserRole[] = ["SUPER_ADMIN", "MANAGER", "KITCHEN"];
+  if (!allowed.includes(session.role)) return { ok: false, error: "Accès refusé." };
 
   if (!isPersistenceEnabled()) {
     // Démo : on ne persiste pas et on NE revalide PAS (sinon retour au mock).

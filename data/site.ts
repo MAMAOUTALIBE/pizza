@@ -22,7 +22,8 @@ export const site = {
   },
   // Coordonnées approximatives (place de l'Italie, Paris) pour la carte intégrée.
   geo: { lat: 48.8312, lng: 2.3559 },
-  url: "https://labellapizzeria.fr",
+  // URL publique — surchargée par NEXT_PUBLIC_SITE_URL en production (inlinée au build).
+  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://labellapizzeria.fr",
 } as const;
 
 /** Navigation principale (header + footer). */

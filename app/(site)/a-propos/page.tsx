@@ -5,6 +5,7 @@ import { PageHero } from "@/components/ui/PageHero";
 import { SectionTitle } from "@/components/ui/SectionTitle";
 import { Reveal } from "@/components/ui/Reveal";
 import { CTAButton } from "@/components/ui/CTAButton";
+import { AboutTabs } from "@/components/AboutTabs";
 
 export const metadata: Metadata = {
   title: "À propos",
@@ -16,7 +17,7 @@ const stats = [
   { value: "+15", label: "Ans de passion" },
   { value: "100%", label: "Pâte maison" },
   { value: "+50", label: "Recettes" },
-  { value: "4,9/5", label: "Satisfaction client" },
+  { value: "4,8/5", label: "Satisfaction client" },
 ];
 
 const values = [
@@ -53,8 +54,13 @@ export default function AProposPage() {
         image="/images/pizzeria/09_four_a_bois_pizza.png"
       />
 
+      {/* Version mobile condensée en onglets (une vue) */}
+      <AboutTabs />
+
+      {/* Version desktop complète */}
+      <div className="hidden lg:block">
       {/* Histoire */}
-      <section className="bg-paper py-16 lg:py-24">
+      <section className="bg-paper py-8 lg:py-24">
         <div className="container-page grid items-center gap-12 lg:grid-cols-2">
           <Reveal className="relative aspect-[4/3] overflow-hidden rounded-3xl shadow-card">
             <Image
@@ -98,7 +104,7 @@ export default function AProposPage() {
       </section>
 
       {/* Statistiques */}
-      <section className="bg-charcoal-900 py-14 text-cream-50">
+      <section className="bg-charcoal-900 py-8 text-cream-50 sm:py-14">
         <div className="container-page grid grid-cols-2 gap-8 text-center lg:grid-cols-4">
           {stats.map((stat) => (
             <Reveal key={stat.label}>
@@ -114,7 +120,7 @@ export default function AProposPage() {
       </section>
 
       {/* Valeurs */}
-      <section className="bg-paper py-16 lg:py-24">
+      <section className="bg-paper py-8 lg:py-24">
         <div className="container-page">
           <SectionTitle
             eyebrow="Ce qui nous anime"
@@ -144,6 +150,7 @@ export default function AProposPage() {
           </div>
         </div>
       </section>
+      </div>
     </>
   );
 }

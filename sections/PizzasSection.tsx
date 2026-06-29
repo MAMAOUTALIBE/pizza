@@ -34,7 +34,7 @@ export function PizzasSection() {
   };
 
   return (
-    <section id="nos-pizzas" className="bg-paper py-20 lg:py-24">
+    <section id="nos-pizzas" className="bg-paper py-10 lg:py-24">
       <div className="container-page">
         <SectionTitle
           eyebrow="Découvrez"
@@ -83,9 +83,12 @@ export function PizzasSection() {
               <Reveal
                 key={pizza.id}
                 delay={i * 60}
-                className="w-[78%] shrink-0 snap-start sm:w-[45%] lg:w-[calc(25%-15px)]"
+                className="w-[78%] shrink-0 snap-start sm:w-[45%] md:w-[calc(33.333%-14px)] lg:w-[calc(25%-15px)]"
               >
-                <PizzaCard pizza={pizza} />
+                <PizzaCard
+                  pizza={pizza}
+                  sizes="(max-width: 639px) 78vw, (max-width: 767px) 45vw, (max-width: 1279px) 33vw, 25vw"
+                />
               </Reveal>
             ))}
           </div>

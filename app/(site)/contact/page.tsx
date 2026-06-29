@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { MapPin, Phone, Mail, Clock } from "lucide-react";
+import Link from "next/link";
+import { MapPin, Phone, Mail, Clock, Navigation, Pizza } from "lucide-react";
 import { site, openingHours } from "@/data/site";
 import { PageHero } from "@/components/ui/PageHero";
 import { SectionTitle } from "@/components/ui/SectionTitle";
@@ -17,6 +18,7 @@ export const metadata: Metadata = {
 // URL OpenStreetMap (sans clé) centrée sur le restaurant.
 const { lat, lng } = site.geo;
 const mapSrc = `https://www.openstreetmap.org/export/embed.html?bbox=${lng - 0.008}%2C${lat - 0.004}%2C${lng + 0.008}%2C${lat + 0.004}&layer=mapnik&marker=${lat}%2C${lng}`;
+const mapsDir = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(site.address.full)}`;
 
 /** Page Contact : infos pratiques, formulaire, carte. */
 export default function ContactPage() {
@@ -29,7 +31,31 @@ export default function ContactPage() {
         image="/images/pizzeria/01_hero_pizza_premium.png"
       />
 
-      <section className="bg-paper py-16 lg:py-20">
+      <section className="bg-paper py-8 lg:py-20">
+        {/* Actions rapides — visibles immédiatement */}
+        <div className="container-page mb-8 grid grid-cols-3 gap-2 sm:mx-auto sm:max-w-md lg:hidden">
+          <a
+            href={site.phoneHref}
+            className="flex flex-col items-center gap-1 rounded-2xl bg-white py-3 text-xs font-semibold text-charcoal-900 shadow-card transition-transform active:scale-95"
+          >
+            <Phone className="h-5 w-5 text-terracotta-500" aria-hidden /> Appeler
+          </a>
+          <a
+            href={mapsDir}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex flex-col items-center gap-1 rounded-2xl bg-white py-3 text-xs font-semibold text-charcoal-900 shadow-card transition-transform active:scale-95"
+          >
+            <Navigation className="h-5 w-5 text-basil-500" aria-hidden /> Itinéraire
+          </a>
+          <Link
+            href="/commander"
+            className="flex flex-col items-center gap-1 rounded-2xl bg-terracotta-500 py-3 text-xs font-semibold text-white shadow-glow transition-transform active:scale-95"
+          >
+            <Pizza className="h-5 w-5" aria-hidden /> Commander
+          </Link>
+        </div>
+
         <div className="container-page grid gap-10 lg:grid-cols-2">
           {/* Coordonnées */}
           <div>

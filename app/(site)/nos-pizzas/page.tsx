@@ -21,14 +21,14 @@ export default function NosPizzasPage() {
         image="/images/pizzeria/09_four_a_bois_pizza.png"
       />
 
-      <section className="bg-paper py-16 lg:py-20">
+      <section className="bg-paper py-8 lg:py-20">
         <div className="container-page">
           <PizzaFilterGrid pizzas={pizzas} />
         </div>
       </section>
 
       {/* CTA bas de page */}
-      <section className="bg-charcoal-900 py-16 text-center text-cream-50">
+      <section className="bg-charcoal-900 py-10 text-center text-cream-50 sm:py-16">
         <div className="container-page">
           <h2 className="font-display text-3xl font-bold uppercase">
             Une envie de pizza&nbsp;?
